@@ -1,6 +1,6 @@
-/* =========================
+/* ==================================================
    取得 HTML 元件
-========================= */
+================================================== */
 
 const convertBtn =
     document.getElementById("convertBtn");
@@ -24,9 +24,9 @@ const linkCount =
     document.getElementById("linkCount");
 
 
-/* =========================
+/* ==================================================
    取得網址列表
-========================= */
+================================================== */
 
 function getLinks() {
 
@@ -56,9 +56,9 @@ function getLinks() {
 }
 
 
-/* =========================
+/* ==================================================
    更新網址數量
-========================= */
+================================================== */
 
 function updateLinkCount() {
 
@@ -71,7 +71,7 @@ function updateLinkCount() {
 
 
     /*
-     * 超過 5 個時變成紅色
+     * 超過 5 個變紅色
      */
 
     if (links.length > 5) {
@@ -82,16 +82,16 @@ function updateLinkCount() {
     } else {
 
         linkCount.style.color =
-            "#333";
+            "#333333";
 
     }
 
 }
 
 
-/* =========================
+/* ==================================================
    顯示錯誤
-========================= */
+================================================== */
 
 function showError(message) {
 
@@ -104,9 +104,9 @@ function showError(message) {
 }
 
 
-/* =========================
+/* ==================================================
    清除錯誤
-========================= */
+================================================== */
 
 function clearError() {
 
@@ -119,9 +119,9 @@ function clearError() {
 }
 
 
-/* =========================
-   輸入網址時
-========================= */
+/* ==================================================
+   輸入網址
+================================================== */
 
 urlInput.addEventListener(
     "input",
@@ -135,31 +135,35 @@ urlInput.addEventListener(
 );
 
 
-/* =========================
+/* ==================================================
    產生推廣連結
-========================= */
+================================================== */
 
 convertBtn.addEventListener(
     "click",
     async () => {
 
+
+        /* 清除舊錯誤 */
+
         clearError();
+
+
+        /* 隱藏舊結果 */
 
         result.style.display =
             "none";
 
 
-        /*
-         * 取得所有網址
-         */
+        /* 取得網址 */
 
         const links =
             getLinks();
 
 
-        /* =====================
+        /* ==========================================
            沒有網址
-        ===================== */
+        ========================================== */
 
         if (links.length === 0) {
 
@@ -172,9 +176,9 @@ convertBtn.addEventListener(
         }
 
 
-        /* =====================
+        /* ==========================================
            超過 5 個
-        ===================== */
+        ========================================== */
 
         if (links.length > 5) {
 
@@ -187,18 +191,16 @@ convertBtn.addEventListener(
         }
 
 
-        /* =====================
+        /* ==========================================
            檢查蝦皮網址
-        ===================== */
+        ========================================== */
 
         const invalidLinks =
             links.filter(
                 url => {
 
-                    return !(
-                        url.includes(
-                            "shopee.tw"
-                        )
+                    return !isShopeeUrl(
+                        url
                     );
 
                 }
@@ -218,61 +220,90 @@ convertBtn.addEventListener(
         }
 
 
-        /* =====================
+        /* ==========================================
            顯示 Loading
-        ===================== */
+        ========================================== */
 
         loading.style.display =
             "flex";
 
 
         /*
-         * =====================================
+         * =================================================
          *
-         * 目前這裡只是「測試版本」
+         * 目前為「測試模式」
          *
-         * 未來 API 完成後，
-         * 這裡會改成：
+         * 之後 API 完成後，
+         * 只需要修改這裡。
          *
-         * links
-         *   ↓
+         * 流程：
+         *
+         * 使用者
+         *     ↓
+         * 5 個蝦皮網址
+         *     ↓
          * Cloudflare Worker
-         *   ↓
+         *     ↓
          * 蝦皮 API
-         *   ↓
-         * 推廣連結
+         *     ↓
+         * 回傳推廣連結
+         *     ↓
+         * 顯示結果
          *
-         * =====================================
+         * =================================================
          */
 
 
         try {
 
+
             /*
-             * 暫時等待 800 毫秒，
-             * 模擬 API 回應
+             * 模擬 API 等待時間
              */
 
             await wait(800);
 
 
             /*
-             * 暫時直接把原網址
-             * 當成轉換結果
+             * 暫時直接使用原網址
+             *
+             * 等 API 完成後替換
+             */
+
+            const convertedLinks =
+                links.map(
+                    url => url
+                );
+
+
+            /*
+             * 顯示結果
              */
 
             showResults(
-                links
+                convertedLinks
             );
 
 
         } catch (err) {
 
+
+            console.error(
+                err
+            );
+
+
             showError(
                 "轉換時發生錯誤，請稍後再試"
             );
 
+
         } finally {
+
+
+            /*
+             * 關閉 Loading
+             */
 
             loading.style.display =
                 "none";
@@ -283,25 +314,63 @@ convertBtn.addEventListener(
 );
 
 
-/* =========================
-   顯示轉換結果
-========================= */
+/* ==================================================
+   判斷是否為蝦皮網址
+================================================== */
+
+function isShopeeUrl(url) {
+
+    try {
+
+        const parsedUrl =
+            new URL(url);
+
+
+        /*
+         * 目前允許：
+         *
+         * shopee.tw
+         * www.shopee.tw
+         */
+
+        return (
+            parsedUrl.hostname ===
+                "shopee.tw"
+
+            ||
+
+            parsedUrl.hostname ===
+                "www.shopee.tw"
+        );
+
+
+    } catch (error) {
+
+        return false;
+
+    }
+
+}
+
+
+/* ==================================================
+   顯示結果
+================================================== */
 
 function showResults(
     links
 ) {
 
-    /*
-     * 清空舊結果
-     */
+
+    /* 清除舊結果 */
 
     result.innerHTML =
         "";
 
 
-    /*
-     * 標題
-     */
+    /* ==========================================
+       標題
+    ========================================== */
 
     const title =
         document.createElement(
@@ -322,16 +391,15 @@ function showResults(
     );
 
 
-    /*
-     * 建立每一個結果
-     */
+    /* ==========================================
+       建立每一個結果
+    ========================================== */
 
     links.forEach(
         (url, index) => {
 
-            /*
-             * 外層
-             */
+
+            /* 外層 */
 
             const item =
                 document.createElement(
@@ -343,9 +411,7 @@ function showResults(
                 "resultItem";
 
 
-            /*
-             * 網址輸入框
-             */
+            /* 網址 */
 
             const input =
                 document.createElement(
@@ -365,9 +431,7 @@ function showResults(
                 true;
 
 
-            /*
-             * 複製按鈕
-             */
+            /* 複製按鈕 */
 
             const button =
                 document.createElement(
@@ -383,21 +447,22 @@ function showResults(
                 "複製";
 
 
-            /*
-             * 複製功能
-             */
+            /* ==================================
+               單一複製
+            ================================== */
 
             button.addEventListener(
                 "click",
                 async () => {
 
-                    try {
 
-                        await navigator
-                            .clipboard
-                            .writeText(
-                                url
-                            );
+                    const success =
+                        await copyText(
+                            url
+                        );
+
+
+                    if (success) {
 
 
                         button.textContent =
@@ -415,34 +480,16 @@ function showResults(
                         );
 
 
-                    } catch (err) {
+                    } else {
 
-                        /*
-                         * 如果瀏覽器禁止
-                         * clipboard API，
-                         * 就選取文字
-                         */
+
+                        input.focus();
 
                         input.select();
 
-                        document.execCommand(
-                            "copy"
-                        );
-
 
                         button.textContent =
-                            "已複製 ✓";
-
-
-                        setTimeout(
-                            () => {
-
-                                button.textContent =
-                                    "複製";
-
-                            },
-                            1500
-                        );
+                            "請手動複製";
 
                     }
 
@@ -450,9 +497,7 @@ function showResults(
             );
 
 
-            /*
-             * 加入畫面
-             */
+            /* 加入 */
 
             item.appendChild(
                 input
@@ -472,11 +517,9 @@ function showResults(
     );
 
 
-    /*
-     * =========================
-     * 全部複製
-     * =========================
-     */
+    /* ==========================================
+       全部複製按鈕
+    ========================================== */
 
     const copyAllButton =
         document.createElement(
@@ -496,17 +539,26 @@ function showResults(
         "全部複製";
 
 
+    /* ==========================================
+       全部複製
+    ========================================== */
+
     copyAllButton.addEventListener(
         "click",
         async () => {
 
-            try {
 
-                await navigator
-                    .clipboard
-                    .writeText(
-                        links.join("\n")
-                    );
+            const allLinks =
+                links.join("\n");
+
+
+            const success =
+                await copyText(
+                    allLinks
+                );
+
+
+            if (success) {
 
 
                 copyAllButton.textContent =
@@ -524,51 +576,11 @@ function showResults(
                 );
 
 
-            } catch (err) {
-
-                /*
-                 * 備用複製方式
-                 */
-
-                const temp =
-                    document.createElement(
-                        "textarea"
-                    );
-
-
-                temp.value =
-                    links.join("\n");
-
-
-                document.body.appendChild(
-                    temp
-                );
-
-
-                temp.select();
-
-
-                document.execCommand(
-                    "copy"
-                );
-
-
-                temp.remove();
+            } else {
 
 
                 copyAllButton.textContent =
-                    "全部已複製 ✓";
-
-
-                setTimeout(
-                    () => {
-
-                        copyAllButton.textContent =
-                            "全部複製";
-
-                    },
-                    1500
-                );
+                    "複製失敗";
 
             }
 
@@ -581,9 +593,7 @@ function showResults(
     );
 
 
-    /*
-     * 顯示結果
-     */
+    /* 顯示 */
 
     result.style.display =
         "block";
@@ -591,17 +601,125 @@ function showResults(
 }
 
 
-/* =========================
+/* ==================================================
+   複製文字
+================================================== */
+
+async function copyText(
+    text
+) {
+
+
+    /*
+     * 優先使用現代 Clipboard API
+     */
+
+    try {
+
+
+        if (
+            navigator.clipboard
+            &&
+            window.isSecureContext
+        ) {
+
+
+            await navigator
+                .clipboard
+                .writeText(
+                    text
+                );
+
+
+            return true;
+
+        }
+
+
+    } catch (error) {
+
+
+        console.log(
+            "Clipboard API 失敗，使用備用方式"
+        );
+
+    }
+
+
+    /*
+     * 備用複製方式
+     */
+
+    try {
+
+
+        const textarea =
+            document.createElement(
+                "textarea"
+            );
+
+
+        textarea.value =
+            text;
+
+
+        textarea.style.position =
+            "fixed";
+
+
+        textarea.style.opacity =
+            "0";
+
+
+        document.body.appendChild(
+            textarea
+        );
+
+
+        textarea.focus();
+
+
+        textarea.select();
+
+
+        const success =
+            document.execCommand(
+                "copy"
+            );
+
+
+        textarea.remove();
+
+
+        return success;
+
+
+    } catch (error) {
+
+
+        return false;
+
+    }
+
+}
+
+
+/* ==================================================
    清除
-========================= */
+================================================== */
 
 clearBtn.addEventListener(
     "click",
     () => {
 
+
+        /* 清除輸入 */
+
         urlInput.value =
             "";
 
+
+        /* 清除結果 */
 
         result.innerHTML =
             "";
@@ -611,23 +729,27 @@ clearBtn.addEventListener(
             "none";
 
 
+        /* 清除錯誤 */
+
         clearError();
 
+
+        /* 清除數量 */
 
         linkCount.textContent =
             "0 / 5";
 
 
         linkCount.style.color =
-            "#333";
+            "#333333";
 
     }
 );
 
 
-/* =========================
-   延遲工具
-========================= */
+/* ==================================================
+   等待工具
+================================================== */
 
 function wait(
     milliseconds
@@ -647,8 +769,8 @@ function wait(
 }
 
 
-/* =========================
+/* ==================================================
    初始化
-========================= */
+================================================== */
 
 updateLinkCount();
