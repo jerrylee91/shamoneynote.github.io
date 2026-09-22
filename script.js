@@ -23,28 +23,6 @@ const error =
 const linkCount =
     document.getElementById("linkCount");
 
-const communityLink =
-    document.getElementById("communityLink");
-
-
-/* ==================================================
-   LINE 社群連結
-================================================== */
-
-/*
- * 使用編碼方式設定連結，
- * 避免把完整網址直接寫在 HTML 裡。
- */
-
-const communityUrl =
-    atob(
-        "aHR0cHM6Ly9yZXVybC5jYy9lVnFWM1c="
-    );
-
-
-communityLink.href =
-    communityUrl;
-
 
 /* ==================================================
    取得網址列表
@@ -144,7 +122,7 @@ function clearError() {
 
 
 /* ==================================================
-   輸入網址
+   使用者輸入
 ================================================== */
 
 urlInput.addEventListener(
@@ -179,7 +157,9 @@ convertBtn.addEventListener(
             getLinks();
 
 
-        /* 沒有網址 */
+        /* ==========================================
+           沒有網址
+        ========================================== */
 
         if (links.length === 0) {
 
@@ -192,7 +172,9 @@ convertBtn.addEventListener(
         }
 
 
-        /* 超過 5 個 */
+        /* ==========================================
+           超過 5 個
+        ========================================== */
 
         if (links.length > 5) {
 
@@ -205,7 +187,9 @@ convertBtn.addEventListener(
         }
 
 
-        /* 檢查網址 */
+        /* ==========================================
+           檢查網址
+        ========================================== */
 
         const invalidLinks =
             links.filter(
@@ -227,7 +211,9 @@ convertBtn.addEventListener(
         }
 
 
-        /* Loading */
+        /* ==========================================
+           顯示 Loading
+        ========================================== */
 
         loading.style.display =
             "flex";
@@ -237,15 +223,15 @@ convertBtn.addEventListener(
 
 
             /*
-             * ==========================================
+             * ========================================
              * API 預留區
-             * ==========================================
+             * ========================================
              *
-             * 目前尚未接蝦皮 API，
-             * 所以先將原始網址直接顯示。
+             * 目前還沒有接蝦皮 API，
+             * 所以暫時把原始網址當作結果。
              *
-             * 未來 API 完成後，
-             * 只需要修改這個區域。
+             * 之後拿到 API 後，
+             * 只需要修改這裡。
              */
 
 
@@ -338,6 +324,10 @@ function showResults(
         "";
 
 
+    /* ==========================================
+       結果標題
+    ========================================== */
+
     const title =
         document.createElement(
             "p"
@@ -357,6 +347,10 @@ function showResults(
     );
 
 
+    /* ==========================================
+       每一個連結
+    ========================================== */
+
     links.forEach(
         url => {
 
@@ -370,6 +364,8 @@ function showResults(
             item.className =
                 "resultItem";
 
+
+            /* 網址 */
 
             const input =
                 document.createElement(
@@ -388,6 +384,8 @@ function showResults(
             input.readOnly =
                 true;
 
+
+            /* 複製按鈕 */
 
             const button =
                 document.createElement(
@@ -409,7 +407,9 @@ function showResults(
 
 
                     const success =
-                        await copyText(url);
+                        await copyText(
+                            url
+                        );
 
 
                     if (success) {
@@ -460,6 +460,10 @@ function showResults(
         }
     );
 
+
+    /* ==========================================
+       全部複製
+    ========================================== */
 
     const copyAllButton =
         document.createElement(
@@ -537,6 +541,8 @@ async function copyText(
 ) {
 
 
+    /* 現代瀏覽器 */
+
     try {
 
 
@@ -549,7 +555,9 @@ async function copyText(
 
             await navigator
                 .clipboard
-                .writeText(text);
+                .writeText(
+                    text
+                );
 
 
             return true;
@@ -565,6 +573,8 @@ async function copyText(
 
     }
 
+
+    /* 備用方法 */
 
     try {
 
@@ -650,7 +660,7 @@ clearBtn.addEventListener(
 
 
 /* ==================================================
-   等待
+   等待工具
 ================================================== */
 
 function wait(
