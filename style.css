@@ -1,0 +1,274 @@
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+
+    margin: 0;
+
+    font-family:
+        Arial,
+        "Noto Sans TC",
+        sans-serif;
+
+    background: #f6f7f9;
+
+    color: #222;
+}
+
+
+.container {
+
+    width: 100%;
+
+    max-width: 680px;
+
+    margin: 0 auto;
+
+    padding: 50px 20px;
+}
+
+
+/* Logo */
+
+.logo {
+
+    text-align: center;
+
+    font-size: 50px;
+}
+
+
+/* 標題 */
+
+h1 {
+
+    text-align: center;
+
+    margin: 10px 0 5px;
+}
+
+
+.subtitle {
+
+    text-align: center;
+
+    color: #777;
+
+    margin-bottom: 30px;
+}
+
+
+/* 卡片 */
+
+.card {
+
+    background: white;
+
+    padding: 30px;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 8px 30px
+        rgba(0,0,0,0.06);
+}
+
+
+label {
+
+    display: block;
+
+    margin-bottom: 10px;
+
+    font-weight: bold;
+}
+
+
+/* 輸入框 */
+
+textarea {
+
+    width: 100%;
+
+    min-height: 130px;
+
+    resize: vertical;
+
+    padding: 15px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 10px;
+
+    font-size: 15px;
+
+    outline: none;
+}
+
+
+textarea:focus {
+
+    border-color: #999;
+}
+
+
+/* 按鈕 */
+
+.buttons {
+
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 15px;
+}
+
+
+button {
+
+    border: none;
+
+    cursor: pointer;
+
+    padding: 13px 20px;
+
+    border-radius: 10px;
+
+    font-size: 15px;
+
+    flex: 1;
+}
+
+
+.primary {
+
+    background: #111;
+
+    color: white;
+}
+
+
+.secondary {
+
+    background: #eee;
+
+    color: #333;
+}
+
+
+/* Loading */
+
+.loading {
+
+    display: none;
+
+    margin-top: 20px;
+
+    text-align: center;
+
+    color: #777;
+}
+
+
+/* 結果 */
+
+.result {
+
+    display: none;
+
+    margin-top: 25px;
+}
+
+
+.resultBox {
+
+    display: flex;
+
+    gap: 8px;
+}
+
+
+.resultBox input {
+
+    flex: 1;
+
+    padding: 12px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 8px;
+
+    min-width: 0;
+}
+
+
+.resultBox button {
+
+    flex: 0 0 80px;
+
+    background: #111;
+
+    color: white;
+}
+
+
+/* 錯誤 */
+
+.error {
+
+    color: #d00;
+
+    margin-top: 15px;
+}
+
+
+/* LINE */
+
+.community {
+
+    text-align: center;
+
+    margin-top: 30px;
+}
+
+
+.community a {
+
+    display: inline-block;
+
+    padding: 12px 25px;
+
+    background: #111;
+
+    color: white;
+
+    text-decoration: none;
+
+    border-radius: 10px;
+}
+
+
+/* 手機版 */
+
+@media (max-width: 600px) {
+
+    .container {
+
+        padding: 30px 15px;
+    }
+
+
+    .card {
+
+        padding: 20px;
+    }
+
+
+    .buttons {
+
+        flex-direction: column;
+    }
+
+}
