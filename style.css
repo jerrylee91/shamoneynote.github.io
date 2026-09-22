@@ -1,5 +1,14 @@
+/* =========================
+   基本設定
+========================= */
+
 * {
     box-sizing: border-box;
+}
+
+
+html {
+    scroll-behavior: smooth;
 }
 
 
@@ -10,13 +19,20 @@ body {
     font-family:
         Arial,
         "Noto Sans TC",
+        "Microsoft JhengHei",
         sans-serif;
 
     background: #f6f7f9;
 
     color: #222;
+
+    line-height: 1.6;
 }
 
+
+/* =========================
+   主容器
+========================= */
 
 .container {
 
@@ -26,27 +42,53 @@ body {
 
     margin: 0 auto;
 
-    padding: 50px 20px;
+    padding: 50px 20px 60px;
 }
 
 
-/* Logo */
+/* =========================
+   Logo
+========================= */
 
 .logo {
 
-    text-align: center;
+    width: 76px;
 
-    font-size: 50px;
+    height: 76px;
+
+    margin: 0 auto 15px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: white;
+
+    border-radius: 50%;
+
+    font-size: 42px;
+
+    box-shadow:
+        0 8px 25px
+        rgba(0, 0, 0, 0.08);
 }
 
 
-/* 標題 */
+/* =========================
+   標題
+========================= */
 
 h1 {
 
     text-align: center;
 
-    margin: 10px 0 5px;
+    margin: 0;
+
+    font-size: 32px;
+
+    font-weight: 700;
 }
 
 
@@ -54,13 +96,17 @@ h1 {
 
     text-align: center;
 
+    margin: 6px 0 30px;
+
     color: #777;
 
-    margin-bottom: 30px;
+    font-size: 15px;
 }
 
 
-/* 卡片 */
+/* =========================
+   主要卡片
+========================= */
 
 .card {
 
@@ -72,9 +118,13 @@ h1 {
 
     box-shadow:
         0 8px 30px
-        rgba(0,0,0,0.06);
+        rgba(0, 0, 0, 0.06);
 }
 
+
+/* =========================
+   Label
+========================= */
 
 label {
 
@@ -82,39 +132,103 @@ label {
 
     margin-bottom: 10px;
 
-    font-weight: bold;
+    font-size: 15px;
+
+    font-weight: 700;
 }
 
 
-/* 輸入框 */
+/* =========================
+   輸入框
+========================= */
 
 textarea {
 
     width: 100%;
 
-    min-height: 130px;
-
-    resize: vertical;
+    min-height: 180px;
 
     padding: 15px;
+
+    resize: vertical;
 
     border: 1px solid #ddd;
 
     border-radius: 10px;
 
-    font-size: 15px;
-
     outline: none;
+
+    background: #fff;
+
+    color: #222;
+
+    font-family:
+        Arial,
+        "Noto Sans TC",
+        "Microsoft JhengHei",
+        sans-serif;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
+}
+
+
+textarea::placeholder {
+
+    color: #aaa;
 }
 
 
 textarea:focus {
 
     border-color: #999;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(0, 0, 0, 0.04);
 }
 
 
-/* 按鈕 */
+/* =========================
+   網址數量提示
+========================= */
+
+.input-hint {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-top: 8px;
+
+    color: #777;
+
+    font-size: 13px;
+}
+
+
+#linkCount {
+
+    flex-shrink: 0;
+
+    font-weight: 700;
+
+    color: #333;
+}
+
+
+/* =========================
+   按鈕區
+========================= */
 
 .buttons {
 
@@ -122,7 +236,7 @@ textarea:focus {
 
     gap: 10px;
 
-    margin-top: 15px;
+    margin-top: 18px;
 }
 
 
@@ -136,13 +250,35 @@ button {
 
     border-radius: 10px;
 
+    font-family: inherit;
+
     font-size: 15px;
 
-    flex: 1;
+    font-weight: 600;
+
+    transition:
+        opacity 0.2s,
+        transform 0.1s;
 }
 
 
+button:hover {
+
+    opacity: 0.88;
+}
+
+
+button:active {
+
+    transform: scale(0.98);
+}
+
+
+/* 主要按鈕 */
+
 .primary {
+
+    flex: 1;
 
     background: #111;
 
@@ -150,7 +286,11 @@ button {
 }
 
 
+/* 次要按鈕 */
+
 .secondary {
+
+    flex: 0 0 100px;
 
     background: #eee;
 
@@ -158,41 +298,127 @@ button {
 }
 
 
-/* Loading */
+/* =========================
+   Loading
+========================= */
 
 .loading {
 
     display: none;
 
-    margin-top: 20px;
+    align-items: center;
 
-    text-align: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-top: 22px;
 
     color: #777;
+
+    font-size: 14px;
 }
 
 
-/* 結果 */
+.spinner {
+
+    width: 18px;
+
+    height: 18px;
+
+    border: 2px solid #ddd;
+
+    border-top-color: #333;
+
+    border-radius: 50%;
+
+    animation:
+        spin 0.8s linear infinite;
+}
+
+
+@keyframes spin {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+/* =========================
+   錯誤訊息
+========================= */
+
+.error {
+
+    display: none;
+
+    margin-top: 18px;
+
+    padding: 12px 14px;
+
+    border-radius: 8px;
+
+    background: #fff0f0;
+
+    color: #d00000;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   結果區
+========================= */
 
 .result {
 
     display: none;
 
     margin-top: 25px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid #eee;
 }
 
 
-.resultBox {
+.result-title {
+
+    margin: 0 0 15px;
+
+    font-size: 15px;
+
+    font-weight: 700;
+}
+
+
+/* =========================
+   單一結果
+========================= */
+
+.resultItem {
 
     display: flex;
 
+    align-items: center;
+
     gap: 8px;
+
+    margin-bottom: 10px;
 }
 
 
-.resultBox input {
+.resultItem input {
 
     flex: 1;
+
+    min-width: 0;
 
     padding: 12px;
 
@@ -200,13 +426,41 @@ button {
 
     border-radius: 8px;
 
-    min-width: 0;
+    background: #f9f9f9;
+
+    color: #333;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    outline: none;
 }
 
 
-.resultBox button {
+.resultItem button {
 
-    flex: 0 0 80px;
+    flex: 0 0 75px;
+
+    padding: 12px 10px;
+
+    background: #111;
+
+    color: white;
+
+    font-size: 13px;
+}
+
+
+/* =========================
+   全部複製
+========================= */
+
+.copyAll {
+
+    width: 100%;
+
+    margin-top: 5px;
 
     background: #111;
 
@@ -214,23 +468,35 @@ button {
 }
 
 
-/* 錯誤 */
-
-.error {
-
-    color: #d00;
-
-    margin-top: 15px;
-}
-
-
-/* LINE */
+/* =========================
+   LINE 社群
+========================= */
 
 .community {
 
     text-align: center;
 
     margin-top: 30px;
+
+    color: #555;
+}
+
+
+.community h3 {
+
+    margin: 0 0 5px;
+
+    font-size: 18px;
+}
+
+
+.community p {
+
+    margin: 0 0 15px;
+
+    font-size: 14px;
+
+    color: #777;
 }
 
 
@@ -238,7 +504,9 @@ button {
 
     display: inline-block;
 
-    padding: 12px 25px;
+    padding: 11px 24px;
+
+    border-radius: 10px;
 
     background: #111;
 
@@ -246,29 +514,113 @@ button {
 
     text-decoration: none;
 
-    border-radius: 10px;
+    font-size: 14px;
+
+    font-weight: 600;
+
+    transition: opacity 0.2s;
 }
 
 
-/* 手機版 */
+.community a:hover {
+
+    opacity: 0.85;
+}
+
+
+/* =========================
+   手機版
+========================= */
 
 @media (max-width: 600px) {
 
     .container {
 
-        padding: 30px 15px;
+        padding:
+            30px
+            15px
+            50px;
+    }
+
+
+    .logo {
+
+        width: 68px;
+
+        height: 68px;
+
+        font-size: 36px;
+    }
+
+
+    h1 {
+
+        font-size: 28px;
+    }
+
+
+    .subtitle {
+
+        margin-bottom: 24px;
     }
 
 
     .card {
 
         padding: 20px;
+
+        border-radius: 15px;
+    }
+
+
+    textarea {
+
+        min-height: 170px;
+
+        font-size: 14px;
     }
 
 
     .buttons {
 
         flex-direction: column;
+    }
+
+
+    .primary,
+    .secondary {
+
+        flex: none;
+
+        width: 100%;
+    }
+
+
+    .input-hint {
+
+        align-items: flex-start;
+
+        font-size: 12px;
+    }
+
+
+    .resultItem {
+
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+
+    .resultItem input {
+
+        width: 100%;
+    }
+
+
+    .resultItem button {
+
+        width: 100%;
     }
 
 }
