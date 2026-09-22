@@ -86,8 +86,7 @@ body {
 
     right: -90px;
 
-    background:
-        #ff8a00;
+    background: #ff8a00;
 }
 
 
@@ -101,8 +100,7 @@ body {
 
     left: -170px;
 
-    background:
-        #dceeff;
+    background: #dceeff;
 }
 
 
@@ -226,8 +224,7 @@ body {
 
     border-radius: 5px;
 
-    background:
-        #ff8500;
+    background: #ff8500;
 }
 
 
@@ -279,8 +276,6 @@ body {
     overflow: hidden;
 }
 
-
-/* 卡片上方橘色裝飾 */
 
 .tool-card::before {
 
@@ -337,8 +332,7 @@ body {
 
     border-radius: 15px;
 
-    background:
-        #fff1df;
+    background: #fff1df;
 
     font-size: 25px;
 }
@@ -403,8 +397,7 @@ label {
 
     border-radius: 20px;
 
-    background:
-        #eef5ff;
+    background: #eef5ff;
 
     color: #2463a6;
 
@@ -436,8 +429,7 @@ textarea {
 
     border-radius: 14px;
 
-    background:
-        #fbfcfe;
+    background: #fbfcfe;
 
     color: #263b5a;
 
@@ -462,8 +454,7 @@ textarea::placeholder {
 
 textarea:focus {
 
-    border-color:
-        #ff8a00;
+    border-color: #ff8a00;
 
     background: #ffffff;
 
@@ -585,8 +576,7 @@ button:active {
 
     border-radius: 12px;
 
-    background:
-        #edf1f6;
+    background: #edf1f6;
 
     color: #52627a;
 
@@ -671,8 +661,7 @@ button:active {
 
     border-radius: 10px;
 
-    background:
-        #fff3f0;
+    background: #fff3f0;
 
     color: #d33c24;
 
@@ -739,8 +728,7 @@ button:active {
 
     border-radius: 9px;
 
-    background:
-        #f8fafc;
+    background: #f8fafc;
 
     color: #52627a;
 
@@ -758,8 +746,7 @@ button:active {
 
     border-radius: 9px;
 
-    background:
-        #102b54;
+    background: #102b54;
 
     color: #ffffff;
 
@@ -777,8 +764,7 @@ button:active {
 
     border-radius: 10px;
 
-    background:
-        #102b54;
+    background: #102b54;
 
     color: #ffffff;
 }
@@ -839,8 +825,7 @@ button:active {
 
     border-radius: 5px;
 
-    background:
-        #ff8500;
+    background: #ff8500;
 }
 
 
@@ -889,8 +874,7 @@ button:active {
 
     border-radius: 50%;
 
-    background:
-        #ff8a00;
+    background: #ff8a00;
 
     color: #ffffff;
 
@@ -926,7 +910,7 @@ button:active {
 
 
 /* ==================================================
-   社群
+   LINE 社群
 ================================================== */
 
 .community-card {
@@ -1037,8 +1021,7 @@ button:active {
 
     border-radius: 9px;
 
-    background:
-        #ff8500;
+    background: #ff8500;
 
     color: #ffffff;
 
@@ -1059,8 +1042,7 @@ button:active {
     transform:
         translateY(-1px);
 
-    background:
-        #ff9d25;
+    background: #ff9d25;
 }
 
 
@@ -1292,7 +1274,6 @@ footer small {
 
         width: 100%;
     }
-
 
 }
 
