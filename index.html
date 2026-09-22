@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>蝦賺筆記｜推廣連結轉換器</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <!-- Logo -->
+    <div class="logo">
+        🦐
+    </div>
+
+
+    <!-- 標題 -->
+    <h1>
+        蝦賺筆記
+    </h1>
+
+    <p class="subtitle">
+        蝦皮推廣連結轉換器
+    </p>
+
+
+    <!-- 主要功能 -->
+    <div class="card">
+
+        <label for="urlInput">
+            請貼上蝦皮商品網址
+        </label>
+
+
+        <textarea
+            id="urlInput"
+            placeholder="請貼上蝦皮商品網址..."
+        ></textarea>
+
+
+        <div class="buttons">
+
+            <button
+                id="convertBtn"
+                class="primary"
+            >
+                產生推廣連結
+            </button>
+
+
+            <button
+                id="clearBtn"
+                class="secondary"
+            >
+                清除
+            </button>
+
+        </div>
+
+
+        <!-- 載入中 -->
+        <div
+            id="loading"
+            class="loading"
+        >
+            轉換中...
+        </div>
+
+
+        <!-- 錯誤 -->
+        <div
+            id="error"
+            class="error"
+        ></div>
+
+
+        <!-- 結果 -->
+        <div
+            id="result"
+            class="result"
+        >
+
+            <p>
+                推廣連結：
+            </p>
+
+
+            <div class="resultBox">
+
+                <input
+                    id="resultUrl"
+                    readonly
+                >
+
+
+                <button
+                    id="copyBtn"
+                >
+                    複製
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- LINE 社群 -->
+    <div class="community">
+
+        <h3>
+            💰 更多優惠
+        </h3>
+
+        <p>
+            加入蝦賺筆記 LINE 社群
+        </p>
+
+
+        <a
+            href="#"
+            target="_blank"
+        >
+            加入社群
+        </a>
+
+    </div>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
