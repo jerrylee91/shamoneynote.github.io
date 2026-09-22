@@ -10,7 +10,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>蝦賺筆記｜推廣連結轉換器</title>
+    <title>蝦賺筆記｜蝦皮推廣連結轉換器</title>
 
     <link rel="stylesheet" href="style.css">
 
@@ -19,131 +19,136 @@
 
 <body>
 
-<div class="container">
+    <main class="container">
 
-    <!-- Logo -->
-    <div class="logo">
-        🦐
-    </div>
-
-
-    <!-- 標題 -->
-    <h1>
-        蝦賺筆記
-    </h1>
-
-    <p class="subtitle">
-        蝦皮推廣連結轉換器
-    </p>
-
-
-    <!-- 主要功能 -->
-    <div class="card">
-
-        <label for="urlInput">
-            請貼上蝦皮商品網址
-        </label>
-
-
-        <textarea
-            id="urlInput"
-            placeholder="請貼上蝦皮商品網址..."
-        ></textarea>
-
-
-        <div class="buttons">
-
-            <button
-                id="convertBtn"
-                class="primary"
-            >
-                產生推廣連結
-            </button>
-
-
-            <button
-                id="clearBtn"
-                class="secondary"
-            >
-                清除
-            </button>
-
+        <!-- Logo -->
+        <div class="logo">
+            🦐
         </div>
 
 
-        <!-- 載入中 -->
-        <div
-            id="loading"
-            class="loading"
-        >
-            轉換中...
-        </div>
+        <!-- 標題 -->
+        <h1>
+            蝦賺筆記
+        </h1>
 
 
-        <!-- 錯誤 -->
-        <div
-            id="error"
-            class="error"
-        ></div>
+        <p class="subtitle">
+            蝦皮推廣連結轉換器
+        </p>
 
 
-        <!-- 結果 -->
-        <div
-            id="result"
-            class="result"
-        >
+        <!-- 主要卡片 -->
+        <section class="card">
 
-            <p>
-                推廣連結：
-            </p>
+            <label for="urlInput">
+                請貼上蝦皮商品網址
+            </label>
 
 
-            <div class="resultBox">
+            <textarea
+                id="urlInput"
+                placeholder="每行貼一個蝦皮商品網址，最多 5 個&#10;&#10;例如：&#10;https://shopee.tw/商品A&#10;https://shopee.tw/商品B&#10;https://shopee.tw/商品C"
+            ></textarea>
 
-                <input
-                    id="resultUrl"
-                    readonly
+
+            <!-- 網址數量 -->
+            <div class="input-hint">
+
+                <span>
+                    每行一個連結，最多一次貼 5 個
+                </span>
+
+                <span id="linkCount">
+                    0 / 5
+                </span>
+
+            </div>
+
+
+            <!-- 按鈕 -->
+            <div class="buttons">
+
+                <button
+                    id="convertBtn"
+                    class="primary"
                 >
+                    產生推廣連結
+                </button>
 
 
                 <button
-                    id="copyBtn"
+                    id="clearBtn"
+                    class="secondary"
                 >
-                    複製
+                    清除
                 </button>
 
             </div>
 
-        </div>
 
-    </div>
+            <!-- 載入中 -->
+            <div
+                id="loading"
+                class="loading"
+            >
+                <div class="spinner"></div>
 
+                <span>
+                    轉換中...
+                </span>
 
-    <!-- LINE 社群 -->
-    <div class="community">
-
-        <h3>
-            💰 更多優惠
-        </h3>
-
-        <p>
-            加入蝦賺筆記 LINE 社群
-        </p>
+            </div>
 
 
-        <a
-            href="#"
-            target="_blank"
-        >
-            加入社群
-        </a>
-
-    </div>
-
-</div>
+            <!-- 錯誤訊息 -->
+            <div
+                id="error"
+                class="error"
+            ></div>
 
 
-<script src="script.js"></script>
+            <!-- 結果 -->
+            <div
+                id="result"
+                class="result"
+            ></div>
+
+        </section>
+
+
+        <!-- LINE 社群 -->
+        <section class="community">
+
+            <h3>
+                💰 更多優惠
+            </h3>
+
+
+            <p>
+                加入蝦賺筆記 LINE 社群
+            </p>
+
+
+            <!--
+                之後把 href="#"
+                改成你的 LINE 社群網址
+            -->
+
+            <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                加入社群
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <script src="script.js"></script>
 
 </body>
 
