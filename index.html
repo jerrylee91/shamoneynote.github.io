@@ -10,143 +10,424 @@
         content="width=device-width, initial-scale=1.0"
     >
 
+    <meta
+        name="description"
+        content="蝦賺筆記｜聰明消費・省錢有術"
+    >
+
     <title>蝦賺筆記｜蝦皮推廣連結轉換器</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
 </head>
 
 
 <body>
 
+
+    <!-- =========================
+         頂部背景裝飾
+    ========================== -->
+
+    <div class="top-decoration">
+
+        <div class="circle circle-1"></div>
+
+        <div class="circle circle-2"></div>
+
+    </div>
+
+
     <main class="container">
 
-        <!-- Logo -->
-      <div class="logo">
-    <img
-        src="3718ece7-c7e1-4d12-a52c-10998a1e6859.png"
-        alt="蝦賺筆記"
-    >
-</div>
+
+        <!-- =========================
+             品牌區
+        ========================== -->
+
+        <header class="brand">
 
 
-        <!-- 標題 -->
-        <h1>
-            蝦賺筆記
-        </h1>
+            <div class="logo">
 
-
-        <p class="subtitle">
-            蝦皮推廣連結轉換器
-        </p>
-
-
-        <!-- 主要卡片 -->
-        <section class="card">
-
-            <label for="urlInput">
-                請貼上蝦皮商品網址
-            </label>
-
-
-            <textarea
-                id="urlInput"
-                placeholder="每行貼一個蝦皮商品網址，最多 5 個&#10;&#10;例如：&#10;https://shopee.tw/商品A&#10;https://shopee.tw/商品B&#10;https://shopee.tw/商品C"
-            ></textarea>
-
-
-            <!-- 網址數量 -->
-            <div class="input-hint">
-
-                <span>
-                    每行一個連結，最多一次貼 5 個
-                </span>
-
-                <span id="linkCount">
-                    0 / 5
-                </span>
+                <img
+                    src="3718ece7-c7e1-4d12-a52c-10998a1e6859.png"
+                    alt="蝦賺筆記"
+                >
 
             </div>
 
 
-            <!-- 按鈕 -->
-            <div class="buttons">
+            <h1>
+                蝦賺筆記
+            </h1>
+
+
+            <div class="brand-line">
+
+                <span></span>
+
+                <strong>
+                    聰明消費・省錢有術
+                </strong>
+
+                <span></span>
+
+            </div>
+
+
+            <p class="description">
+                蝦皮推廣連結快速轉換工具
+            </p>
+
+
+        </header>
+
+
+        <!-- =========================
+             主工具
+        ========================== -->
+
+        <section class="tool-card">
+
+
+            <!-- 卡片標題 -->
+
+            <div class="card-header">
+
+
+                <div class="card-icon">
+                    🔗
+                </div>
+
+
+                <div>
+
+                    <h2>
+                        推廣連結轉換器
+                    </h2>
+
+                    <p>
+                        一次最多轉換 5 個蝦皮連結
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =========================
+                 輸入區
+            ========================== -->
+
+            <div class="input-section">
+
+
+                <div class="label-row">
+
+                    <label for="urlInput">
+
+                        請貼上蝦皮商品網址
+
+                    </label>
+
+
+                    <span
+                        id="linkCount"
+                        class="counter"
+                    >
+                        0 / 5
+                    </span>
+
+                </div>
+
+
+                <textarea
+                    id="urlInput"
+                    placeholder="每行貼上一個蝦皮網址
+
+例如：
+https://shopee.tw/商品A
+https://shopee.tw/商品B
+https://shopee.tw/商品C"
+                ></textarea>
+
+
+                <div class="input-tip">
+
+                    💡
+                    每行一個連結，最多一次貼 5 個
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =========================
+                 按鈕
+            ========================== -->
+
+            <div class="button-row">
+
 
                 <button
                     id="convertBtn"
-                    class="primary"
+                    class="convert-btn"
+                    type="button"
                 >
+
+                    <span class="btn-icon">
+                        ⚡
+                    </span>
+
                     產生推廣連結
+
                 </button>
 
 
                 <button
                     id="clearBtn"
-                    class="secondary"
+                    class="clear-btn"
+                    type="button"
                 >
+
                     清除
+
                 </button>
+
 
             </div>
 
 
-            <!-- 載入中 -->
+            <!-- =========================
+                 Loading
+            ========================== -->
+
             <div
                 id="loading"
                 class="loading"
             >
+
                 <div class="spinner"></div>
 
                 <span>
-                    轉換中...
+                    正在處理連結...
                 </span>
 
             </div>
 
 
-            <!-- 錯誤訊息 -->
+            <!-- =========================
+                 錯誤
+            ========================== -->
+
             <div
                 id="error"
                 class="error"
             ></div>
 
 
-            <!-- 結果 -->
+            <!-- =========================
+                 結果
+            ========================== -->
+
             <div
                 id="result"
                 class="result"
             ></div>
 
+
+        </section>
+
+
+        <!-- =========================
+             使用流程
+        ========================== -->
+
+        <section class="steps">
+
+
+            <div class="section-title">
+
+                <span>
+                    怎麼使用？
+                </span>
+
+            </div>
+
+
+            <div class="step-list">
+
+
+                <div class="step">
+
+                    <div class="step-number">
+                        1
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            複製蝦皮商品連結
+                        </strong>
+
+                        <p>
+                            從蝦皮複製你想分享的商品網址
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="step">
+
+                    <div class="step-number">
+                        2
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            貼到轉換器
+                        </strong>
+
+                        <p>
+                            每行貼一個網址，最多 5 個
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="step">
+
+                    <div class="step-number">
+                        3
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            產生推廣連結
+                        </strong>
+
+                        <p>
+                            產生後即可複製分享
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
         </section>
 
 
-        <!-- LINE 社群 -->
-        <section class="community">
+        <!-- =========================
+             LINE 社群
+        ========================== -->
 
-            <h3>
-                💰 更多優惠
-            </h3>
-
-
-            <p>
-                加入蝦賺筆記 LINE 社群
-            </p>
+        <section class="community-card">
 
 
-            <!--
-                之後把 href="#"
-                改成你的 LINE 社群網址
-            -->
+            <div class="community-icon">
+                💰
+            </div>
 
-            <a
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                加入社群
-            </a>
+
+            <div class="community-content">
+
+                <span class="community-tag">
+                    蝦賺筆記
+                </span>
+
+
+                <h2>
+                    更多優惠，不錯過！
+                </h2>
+
+
+                <p>
+                    加入我們的優惠情報社群<br>
+                    每天一起找優惠、找好康
+                </p>
+
+
+                <a
+                    id="communityLink"
+                    class="community-btn"
+                    href="#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+
+                    加入 LINE 社群
+
+                    <span>
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
 
         </section>
+
+
+        <!-- =========================
+             品牌標語
+        ========================== -->
+
+        <div class="brand-message">
+
+            <span>
+                🛍️
+            </span>
+
+            <strong>
+                聰明買，不一定要少買
+            </strong>
+
+            <span>
+                💰
+            </span>
+
+        </div>
+
+
+        <!-- =========================
+             Footer
+        ========================== -->
+
+        <footer>
+
+            <strong>
+                蝦賺筆記
+            </strong>
+
+            <span>
+                ｜聰明消費・省錢有術
+            </span>
+
+            <br>
+
+            <small>
+                © 2026 蝦賺筆記
+            </small>
+
+        </footer>
+
 
     </main>
 
