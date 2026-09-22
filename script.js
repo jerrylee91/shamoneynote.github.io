@@ -23,6 +23,28 @@ const error =
 const linkCount =
     document.getElementById("linkCount");
 
+const communityLink =
+    document.getElementById("communityLink");
+
+
+/* ==================================================
+   LINE 社群連結
+================================================== */
+
+/*
+ * 使用編碼方式設定連結，
+ * 避免把完整網址直接寫在 HTML 裡。
+ */
+
+const communityUrl =
+    atob(
+        "aHR0cHM6Ly9yZXVybC5jYy9lVnFWM1c="
+    );
+
+
+communityLink.href =
+    communityUrl;
+
 
 /* ==================================================
    取得網址列表
@@ -70,19 +92,21 @@ function updateLinkCount() {
         `${links.length} / 5`;
 
 
-    /*
-     * 超過 5 個變紅色
-     */
-
     if (links.length > 5) {
 
+        linkCount.style.background =
+            "#fff0ed";
+
         linkCount.style.color =
-            "#d00000";
+            "#d33c24";
 
     } else {
 
+        linkCount.style.background =
+            "#eef5ff";
+
         linkCount.style.color =
-            "#333333";
+            "#2463a6";
 
     }
 
@@ -144,26 +168,18 @@ convertBtn.addEventListener(
     async () => {
 
 
-        /* 清除舊錯誤 */
-
         clearError();
 
-
-        /* 隱藏舊結果 */
 
         result.style.display =
             "none";
 
 
-        /* 取得網址 */
-
         const links =
             getLinks();
 
 
-        /* ==========================================
-           沒有網址
-        ========================================== */
+        /* 沒有網址 */
 
         if (links.length === 0) {
 
@@ -176,9 +192,7 @@ convertBtn.addEventListener(
         }
 
 
-        /* ==========================================
-           超過 5 個
-        ========================================== */
+        /* 超過 5 個 */
 
         if (links.length > 5) {
 
@@ -191,19 +205,12 @@ convertBtn.addEventListener(
         }
 
 
-        /* ==========================================
-           檢查蝦皮網址
-        ========================================== */
+        /* 檢查網址 */
 
         const invalidLinks =
             links.filter(
-                url => {
-
-                    return !isShopeeUrl(
-                        url
-                    );
-
-                }
+                url =>
+                    !isShopeeUrl(url)
             );
 
 
@@ -220,65 +227,36 @@ convertBtn.addEventListener(
         }
 
 
-        /* ==========================================
-           顯示 Loading
-        ========================================== */
+        /* Loading */
 
         loading.style.display =
             "flex";
-
-
-        /*
-         * =================================================
-         *
-         * 目前為「測試模式」
-         *
-         * 之後 API 完成後，
-         * 只需要修改這裡。
-         *
-         * 流程：
-         *
-         * 使用者
-         *     ↓
-         * 5 個蝦皮網址
-         *     ↓
-         * Cloudflare Worker
-         *     ↓
-         * 蝦皮 API
-         *     ↓
-         * 回傳推廣連結
-         *     ↓
-         * 顯示結果
-         *
-         * =================================================
-         */
 
 
         try {
 
 
             /*
-             * 模擬 API 等待時間
+             * ==========================================
+             * API 預留區
+             * ==========================================
+             *
+             * 目前尚未接蝦皮 API，
+             * 所以先將原始網址直接顯示。
+             *
+             * 未來 API 完成後，
+             * 只需要修改這個區域。
              */
+
 
             await wait(800);
 
-
-            /*
-             * 暫時直接使用原網址
-             *
-             * 等 API 完成後替換
-             */
 
             const convertedLinks =
                 links.map(
                     url => url
                 );
 
-
-            /*
-             * 顯示結果
-             */
 
             showResults(
                 convertedLinks
@@ -288,9 +266,7 @@ convertBtn.addEventListener(
         } catch (err) {
 
 
-            console.error(
-                err
-            );
+            console.error(err);
 
 
             showError(
@@ -300,10 +276,6 @@ convertBtn.addEventListener(
 
         } finally {
 
-
-            /*
-             * 關閉 Loading
-             */
 
             loading.style.display =
                 "none";
@@ -315,7 +287,7 @@ convertBtn.addEventListener(
 
 
 /* ==================================================
-   判斷是否為蝦皮網址
+   判斷蝦皮網址
 ================================================== */
 
 function isShopeeUrl(url) {
@@ -326,21 +298,21 @@ function isShopeeUrl(url) {
             new URL(url);
 
 
-        /*
-         * 目前允許：
-         *
-         * shopee.tw
-         * www.shopee.tw
-         */
+        const hostname =
+            parsedUrl.hostname
+                .toLowerCase();
+
 
         return (
-            parsedUrl.hostname ===
+
+            hostname ===
                 "shopee.tw"
 
             ||
 
-            parsedUrl.hostname ===
+            hostname ===
                 "www.shopee.tw"
+
         );
 
 
@@ -362,15 +334,9 @@ function showResults(
 ) {
 
 
-    /* 清除舊結果 */
-
     result.innerHTML =
         "";
 
-
-    /* ==========================================
-       標題
-    ========================================== */
 
     const title =
         document.createElement(
@@ -383,7 +349,7 @@ function showResults(
 
 
     title.textContent =
-        `已產生 ${links.length} 個連結`;
+        `✓ 已產生 ${links.length} 個連結`;
 
 
     result.appendChild(
@@ -391,15 +357,9 @@ function showResults(
     );
 
 
-    /* ==========================================
-       建立每一個結果
-    ========================================== */
-
     links.forEach(
-        (url, index) => {
+        url => {
 
-
-            /* 外層 */
 
             const item =
                 document.createElement(
@@ -410,8 +370,6 @@ function showResults(
             item.className =
                 "resultItem";
 
-
-            /* 網址 */
 
             const input =
                 document.createElement(
@@ -431,8 +389,6 @@ function showResults(
                 true;
 
 
-            /* 複製按鈕 */
-
             const button =
                 document.createElement(
                     "button"
@@ -447,19 +403,13 @@ function showResults(
                 "複製";
 
 
-            /* ==================================
-               單一複製
-            ================================== */
-
             button.addEventListener(
                 "click",
                 async () => {
 
 
                     const success =
-                        await copyText(
-                            url
-                        );
+                        await copyText(url);
 
 
                     if (success) {
@@ -487,17 +437,11 @@ function showResults(
 
                         input.select();
 
-
-                        button.textContent =
-                            "請手動複製";
-
                     }
 
                 }
             );
 
-
-            /* 加入 */
 
             item.appendChild(
                 input
@@ -517,10 +461,6 @@ function showResults(
     );
 
 
-    /* ==========================================
-       全部複製按鈕
-    ========================================== */
-
     const copyAllButton =
         document.createElement(
             "button"
@@ -538,10 +478,6 @@ function showResults(
     copyAllButton.textContent =
         "全部複製";
 
-
-    /* ==========================================
-       全部複製
-    ========================================== */
 
     copyAllButton.addEventListener(
         "click",
@@ -575,13 +511,6 @@ function showResults(
                     1500
                 );
 
-
-            } else {
-
-
-                copyAllButton.textContent =
-                    "複製失敗";
-
             }
 
         }
@@ -592,8 +521,6 @@ function showResults(
         copyAllButton
     );
 
-
-    /* 顯示 */
 
     result.style.display =
         "block";
@@ -610,10 +537,6 @@ async function copyText(
 ) {
 
 
-    /*
-     * 優先使用現代 Clipboard API
-     */
-
     try {
 
 
@@ -626,9 +549,7 @@ async function copyText(
 
             await navigator
                 .clipboard
-                .writeText(
-                    text
-                );
+                .writeText(text);
 
 
             return true;
@@ -638,17 +559,12 @@ async function copyText(
 
     } catch (error) {
 
-
         console.log(
-            "Clipboard API 失敗，使用備用方式"
+            "Clipboard API failed"
         );
 
     }
 
-
-    /*
-     * 備用複製方式
-     */
 
     try {
 
@@ -696,7 +612,6 @@ async function copyText(
 
     } catch (error) {
 
-
         return false;
 
     }
@@ -713,13 +628,9 @@ clearBtn.addEventListener(
     () => {
 
 
-        /* 清除輸入 */
-
         urlInput.value =
             "";
 
-
-        /* 清除結果 */
 
         result.innerHTML =
             "";
@@ -729,26 +640,17 @@ clearBtn.addEventListener(
             "none";
 
 
-        /* 清除錯誤 */
-
         clearError();
 
 
-        /* 清除數量 */
-
-        linkCount.textContent =
-            "0 / 5";
-
-
-        linkCount.style.color =
-            "#333333";
+        updateLinkCount();
 
     }
 );
 
 
 /* ==================================================
-   等待工具
+   等待
 ================================================== */
 
 function wait(
