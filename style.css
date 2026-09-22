@@ -1,6 +1,6 @@
-/* =========================
+/* ==================================================
    基本設定
-========================= */
+================================================== */
 
 * {
     box-sizing: border-box;
@@ -16,63 +16,154 @@ body {
 
     margin: 0;
 
+    min-height: 100vh;
+
     font-family:
         Arial,
         "Noto Sans TC",
         "Microsoft JhengHei",
         sans-serif;
 
-    background: #f6f7f9;
+    color: #102b54;
 
-    color: #222;
+    background:
+        linear-gradient(
+            180deg,
+            #f7fbff 0%,
+            #ffffff 45%,
+            #fffaf3 100%
+        );
 
     line-height: 1.6;
+
+    overflow-x: hidden;
 }
 
 
-/* =========================
+/* ==================================================
+   背景裝飾
+================================================== */
+
+.top-decoration {
+
+    position: fixed;
+
+    top: 0;
+
+    left: 0;
+
+    width: 100%;
+
+    height: 420px;
+
+    pointer-events: none;
+
+    overflow: hidden;
+
+    z-index: -1;
+}
+
+
+.circle {
+
+    position: absolute;
+
+    border-radius: 50%;
+
+    filter: blur(2px);
+
+    opacity: 0.55;
+}
+
+
+.circle-1 {
+
+    width: 320px;
+
+    height: 320px;
+
+    top: -170px;
+
+    right: -90px;
+
+    background:
+        #ff8a00;
+}
+
+
+.circle-2 {
+
+    width: 270px;
+
+    height: 270px;
+
+    top: 90px;
+
+    left: -170px;
+
+    background:
+        #dceeff;
+}
+
+
+/* ==================================================
    主容器
-========================= */
+================================================== */
 
 .container {
 
     width: 100%;
 
-    max-width: 680px;
+    max-width: 720px;
 
     margin: 0 auto;
 
-    padding: 50px 20px 60px;
+    padding:
+        45px
+        20px
+        70px;
 }
 
 
-/* =========================
+/* ==================================================
+   品牌區
+================================================== */
+
+.brand {
+
+    text-align: center;
+
+    margin-bottom: 30px;
+}
+
+
+/* ==================================================
    Logo
-========================= */
+================================================== */
 
 .logo {
 
-    width: 130px;
+    width: 155px;
 
-    height: 130px;
+    height: 155px;
 
-    margin: 0 auto 18px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
+    margin:
+        0 auto
+        15px;
 
     border-radius: 50%;
 
     overflow: hidden;
 
-    background: white;
+    background: #ffffff;
 
     box-shadow:
-        0 8px 25px
-        rgba(0, 0, 0, 0.08);
+        0 15px 40px
+        rgba(16, 43, 84, 0.18);
+
+    border:
+        5px solid
+        #ffffff;
 }
 
 
@@ -82,135 +173,207 @@ body {
 
     height: 100%;
 
-    object-fit: cover;
-
     display: block;
+
+    object-fit: cover;
 }
 
 
-/* =========================
-   標題
-========================= */
+/* ==================================================
+   品牌名稱
+================================================== */
 
-h1 {
-
-    text-align: center;
+.brand h1 {
 
     margin: 0;
 
-    font-size: 32px;
+    color: #102b54;
 
-    font-weight: 700;
+    font-size: 38px;
+
+    font-weight: 900;
+
+    letter-spacing: 3px;
+
+    text-shadow:
+        0 2px 0 #ffffff;
 }
 
 
-.subtitle {
+/* ==================================================
+   品牌標語
+================================================== */
 
-    text-align: center;
+.brand-line {
 
-    margin: 6px 0 30px;
+    display: flex;
 
-    color: #777;
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-top: 5px;
+}
+
+
+.brand-line span {
+
+    width: 38px;
+
+    height: 3px;
+
+    border-radius: 5px;
+
+    background:
+        #ff8500;
+}
+
+
+.brand-line strong {
+
+    color: #ff7900;
 
     font-size: 15px;
+
+    letter-spacing: 2px;
 }
 
 
-/* =========================
-   主要卡片
-========================= */
+.description {
 
-.card {
+    margin:
+        8px
+        0
+        0;
 
-    background: white;
+    color: #71809a;
+
+    font-size: 14px;
+}
+
+
+/* ==================================================
+   主工具卡片
+================================================== */
+
+.tool-card {
+
+    position: relative;
 
     padding: 30px;
 
-    border-radius: 18px;
+    background: #ffffff;
+
+    border-radius: 24px;
+
+    border:
+        1px solid
+        #e5ebf3;
 
     box-shadow:
-        0 8px 30px
-        rgba(0, 0, 0, 0.06);
+        0 18px 50px
+        rgba(16, 43, 84, 0.11);
+
+    overflow: hidden;
 }
 
 
-/* =========================
-   Label
-========================= */
+/* 卡片上方橘色裝飾 */
 
-label {
+.tool-card::before {
 
-    display: block;
+    content: "";
 
-    margin-bottom: 10px;
+    position: absolute;
 
-    font-size: 15px;
+    top: 0;
 
-    font-weight: 700;
-}
-
-
-/* =========================
-   輸入框
-========================= */
-
-textarea {
+    left: 0;
 
     width: 100%;
 
-    min-height: 180px;
+    height: 6px;
 
-    padding: 15px;
-
-    resize: vertical;
-
-    border: 1px solid #ddd;
-
-    border-radius: 10px;
-
-    outline: none;
-
-    background: #fff;
-
-    color: #222;
-
-    font-family:
-        Arial,
-        "Noto Sans TC",
-        "Microsoft JhengHei",
-        sans-serif;
-
-    font-size: 14px;
-
-    line-height: 1.7;
-
-    transition:
-        border-color 0.2s,
-        box-shadow 0.2s;
+    background:
+        linear-gradient(
+            90deg,
+            #ff6b00,
+            #ffae00
+        );
 }
 
 
-textarea::placeholder {
+/* ==================================================
+   卡片標題
+================================================== */
 
-    color: #aaa;
+.card-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    margin-bottom: 25px;
 }
 
 
-textarea:focus {
+.card-icon {
 
-    border-color: #999;
+    width: 52px;
 
-    box-shadow:
-        0 0 0 3px
-        rgba(0, 0, 0, 0.04);
+    height: 52px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 15px;
+
+    background:
+        #fff1df;
+
+    font-size: 25px;
 }
 
 
-/* =========================
-   網址數量提示
-========================= */
+.card-header h2 {
 
-.input-hint {
+    margin: 0;
+
+    color: #102b54;
+
+    font-size: 21px;
+
+    font-weight: 800;
+}
+
+
+.card-header p {
+
+    margin:
+        2px
+        0
+        0;
+
+    color: #8995a7;
+
+    font-size: 13px;
+}
+
+
+/* ==================================================
+   Label
+================================================== */
+
+.label-row {
 
     display: flex;
 
@@ -218,37 +381,123 @@ textarea:focus {
 
     justify-content: space-between;
 
-    gap: 10px;
+    margin-bottom: 9px;
+}
+
+
+label {
+
+    color: #263b5a;
+
+    font-size: 15px;
+
+    font-weight: 800;
+}
+
+
+.counter {
+
+    padding:
+        3px
+        9px;
+
+    border-radius: 20px;
+
+    background:
+        #eef5ff;
+
+    color: #2463a6;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+
+/* ==================================================
+   輸入框
+================================================== */
+
+textarea {
+
+    width: 100%;
+
+    min-height: 190px;
+
+    padding: 17px;
+
+    resize: vertical;
+
+    outline: none;
+
+    border:
+        2px solid
+        #e2e8f0;
+
+    border-radius: 14px;
+
+    background:
+        #fbfcfe;
+
+    color: #263b5a;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    line-height: 1.8;
+
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s,
+        background 0.2s;
+}
+
+
+textarea::placeholder {
+
+    color: #aab3c0;
+}
+
+
+textarea:focus {
+
+    border-color:
+        #ff8a00;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 0 4px
+        rgba(255, 138, 0, 0.10);
+}
+
+
+/* ==================================================
+   輸入提示
+================================================== */
+
+.input-tip {
 
     margin-top: 8px;
 
-    color: #777;
+    color: #8995a7;
 
-    font-size: 13px;
+    font-size: 12px;
 }
 
 
-#linkCount {
+/* ==================================================
+   按鈕
+================================================== */
 
-    flex-shrink: 0;
-
-    font-weight: 700;
-
-    color: #333;
-}
-
-
-/* =========================
-   按鈕區
-========================= */
-
-.buttons {
+.button-row {
 
     display: flex;
 
     gap: 10px;
 
-    margin-top: 18px;
+    margin-top: 20px;
 }
 
 
@@ -258,61 +507,96 @@ button {
 
     cursor: pointer;
 
-    padding: 13px 20px;
-
-    border-radius: 10px;
-
     font-family: inherit;
 
-    font-size: 15px;
-
-    font-weight: 600;
+    font-weight: 800;
 
     transition:
-        opacity 0.2s,
-        transform 0.1s;
+        transform 0.15s,
+        box-shadow 0.15s,
+        opacity 0.15s;
 }
 
 
 button:hover {
 
-    opacity: 0.88;
+    transform:
+        translateY(-1px);
 }
 
 
 button:active {
 
-    transform: scale(0.98);
+    transform:
+        translateY(1px);
 }
 
 
-/* 主要按鈕 */
+/* ==================================================
+   主要按鈕
+================================================== */
 
-.primary {
+.convert-btn {
 
     flex: 1;
 
-    background: #111;
+    min-height: 52px;
 
-    color: white;
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff6900,
+            #ff9700
+        );
+
+    color: #ffffff;
+
+    font-size: 15px;
+
+    box-shadow:
+        0 8px 20px
+        rgba(255, 115, 0, 0.25);
 }
 
 
-/* 次要按鈕 */
+.convert-btn:hover {
 
-.secondary {
-
-    flex: 0 0 100px;
-
-    background: #eee;
-
-    color: #333;
+    box-shadow:
+        0 10px 25px
+        rgba(255, 115, 0, 0.35);
 }
 
 
-/* =========================
+.btn-icon {
+
+    margin-right: 5px;
+}
+
+
+/* ==================================================
+   清除
+================================================== */
+
+.clear-btn {
+
+    width: 100px;
+
+    border-radius: 12px;
+
+    background:
+        #edf1f6;
+
+    color: #52627a;
+
+    font-size: 14px;
+}
+
+
+/* ==================================================
    Loading
-========================= */
+================================================== */
 
 .loading {
 
@@ -324,47 +608,52 @@ button:active {
 
     gap: 10px;
 
-    margin-top: 22px;
+    margin-top: 20px;
 
-    color: #777;
+    color: #71809a;
 
-    font-size: 14px;
+    font-size: 13px;
 }
 
 
 .spinner {
 
-    width: 18px;
+    width: 19px;
 
-    height: 18px;
+    height: 19px;
 
-    border: 2px solid #ddd;
+    border:
+        3px solid
+        #e5eaf0;
 
-    border-top-color: #333;
+    border-top-color:
+        #ff7800;
 
     border-radius: 50%;
 
     animation:
-        spin 0.8s linear infinite;
+        spin
+        0.8s
+        linear
+        infinite;
 }
 
 
 @keyframes spin {
 
-    from {
-        transform: rotate(0deg);
-    }
-
     to {
-        transform: rotate(360deg);
+
+        transform:
+            rotate(360deg);
+
     }
 
 }
 
 
-/* =========================
-   錯誤訊息
-========================= */
+/* ==================================================
+   錯誤
+================================================== */
 
 .error {
 
@@ -372,21 +661,28 @@ button:active {
 
     margin-top: 18px;
 
-    padding: 12px 14px;
+    padding:
+        12px
+        14px;
 
-    border-radius: 8px;
+    border:
+        1px solid
+        #ffd0c7;
 
-    background: #fff0f0;
+    border-radius: 10px;
 
-    color: #d00000;
+    background:
+        #fff3f0;
 
-    font-size: 14px;
+    color: #d33c24;
+
+    font-size: 13px;
 }
 
 
-/* =========================
-   結果區
-========================= */
+/* ==================================================
+   結果
+================================================== */
 
 .result {
 
@@ -394,31 +690,32 @@ button:active {
 
     margin-top: 25px;
 
-    padding-top: 20px;
+    padding-top: 22px;
 
-    border-top: 1px solid #eee;
+    border-top:
+        1px solid
+        #edf0f4;
 }
 
 
 .result-title {
 
-    margin: 0 0 15px;
+    margin:
+        0
+        0
+        13px;
+
+    color: #102b54;
 
     font-size: 15px;
 
-    font-weight: 700;
+    font-weight: 800;
 }
 
-
-/* =========================
-   單一結果
-========================= */
 
 .resultItem {
 
     display: flex;
-
-    align-items: center;
 
     gap: 8px;
 
@@ -432,19 +729,24 @@ button:active {
 
     min-width: 0;
 
-    padding: 12px;
+    padding:
+        12px
+        13px;
 
-    border: 1px solid #ddd;
+    border:
+        1px solid
+        #dfe5ed;
 
-    border-radius: 8px;
+    border-radius: 9px;
 
-    background: #f9f9f9;
+    background:
+        #f8fafc;
 
-    color: #333;
+    color: #52627a;
 
     font-family: inherit;
 
-    font-size: 13px;
+    font-size: 12px;
 
     outline: none;
 }
@@ -452,21 +754,18 @@ button:active {
 
 .resultItem button {
 
-    flex: 0 0 75px;
+    width: 75px;
 
-    padding: 12px 10px;
+    border-radius: 9px;
 
-    background: #111;
+    background:
+        #102b54;
 
-    color: white;
+    color: #ffffff;
 
-    font-size: 13px;
+    font-size: 12px;
 }
 
-
-/* =========================
-   全部複製
-========================= */
 
 .copyAll {
 
@@ -474,165 +773,562 @@ button:active {
 
     margin-top: 5px;
 
-    background: #111;
-
-    color: white;
-}
-
-
-/* =========================
-   LINE 社群
-========================= */
-
-.community {
-
-    text-align: center;
-
-    margin-top: 30px;
-
-    color: #555;
-}
-
-
-.community h3 {
-
-    margin: 0 0 5px;
-
-    font-size: 18px;
-}
-
-
-.community p {
-
-    margin: 0 0 15px;
-
-    font-size: 14px;
-
-    color: #777;
-}
-
-
-.community a {
-
-    display: inline-block;
-
-    padding: 11px 24px;
+    padding: 13px;
 
     border-radius: 10px;
 
-    background: #111;
+    background:
+        #102b54;
 
-    color: white;
+    color: #ffffff;
+}
 
-    text-decoration: none;
+
+/* ==================================================
+   使用流程
+================================================== */
+
+.steps {
+
+    margin-top: 35px;
+
+    padding:
+        0
+        5px;
+}
+
+
+.section-title {
+
+    margin-bottom: 15px;
+
+    text-align: center;
+}
+
+
+.section-title span {
+
+    position: relative;
+
+    display: inline-block;
+
+    color: #102b54;
+
+    font-size: 19px;
+
+    font-weight: 900;
+}
+
+
+.section-title span::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+
+    bottom: -7px;
+
+    width: 35px;
+
+    height: 3px;
+
+    transform:
+        translateX(-50%);
+
+    border-radius: 5px;
+
+    background:
+        #ff8500;
+}
+
+
+.step-list {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 12px;
+}
+
+
+.step {
+
+    padding: 18px 15px;
+
+    border-radius: 15px;
+
+    background: #ffffff;
+
+    border:
+        1px solid
+        #e9edf3;
+
+    box-shadow:
+        0 6px 20px
+        rgba(16, 43, 84, 0.05);
+}
+
+
+.step-number {
+
+    width: 32px;
+
+    height: 32px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-bottom: 10px;
+
+    border-radius: 50%;
+
+    background:
+        #ff8a00;
+
+    color: #ffffff;
 
     font-size: 14px;
 
-    font-weight: 600;
-
-    transition: opacity 0.2s;
+    font-weight: 900;
 }
 
 
-.community a:hover {
+.step strong {
 
-    opacity: 0.85;
+    display: block;
+
+    color: #263b5a;
+
+    font-size: 14px;
 }
 
 
-/* =========================
+.step p {
+
+    margin:
+        5px
+        0
+        0;
+
+    color: #8a96a8;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+
+/* ==================================================
+   社群
+================================================== */
+
+.community-card {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    margin-top: 35px;
+
+    padding: 25px;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #102b54,
+            #174b83
+        );
+
+    box-shadow:
+        0 15px 35px
+        rgba(16, 43, 84, 0.18);
+}
+
+
+.community-icon {
+
+    width: 65px;
+
+    height: 65px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 18px;
+
+    background:
+        rgba(255,255,255,0.12);
+
+    font-size: 31px;
+}
+
+
+.community-content {
+
+    flex: 1;
+}
+
+
+.community-tag {
+
+    display: inline-block;
+
+    margin-bottom: 2px;
+
+    color: #ffb52e;
+
+    font-size: 12px;
+
+    font-weight: 800;
+}
+
+
+.community-content h2 {
+
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 20px;
+}
+
+
+.community-content p {
+
+    margin:
+        4px
+        0
+        13px;
+
+    color:
+        rgba(255,255,255,0.75);
+
+    font-size: 12px;
+}
+
+
+.community-btn {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding:
+        9px
+        16px;
+
+    border-radius: 9px;
+
+    background:
+        #ff8500;
+
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    transition:
+        transform 0.15s,
+        background 0.15s;
+}
+
+
+.community-btn:hover {
+
+    transform:
+        translateY(-1px);
+
+    background:
+        #ff9d25;
+}
+
+
+.community-btn span {
+
+    font-size: 17px;
+}
+
+
+/* ==================================================
+   品牌訊息
+================================================== */
+
+.brand-message {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-top: 30px;
+
+    color: #7a8799;
+
+    font-size: 13px;
+}
+
+
+.brand-message strong {
+
+    color: #ff7900;
+}
+
+
+/* ==================================================
+   Footer
+================================================== */
+
+footer {
+
+    margin-top: 25px;
+
+    text-align: center;
+
+    color: #9ba5b3;
+
+    font-size: 12px;
+
+    line-height: 2;
+}
+
+
+footer strong {
+
+    color: #52627a;
+}
+
+
+footer small {
+
+    color: #b0b8c3;
+}
+
+
+/* ==================================================
    手機版
-========================= */
+================================================== */
 
 @media (max-width: 600px) {
+
 
     .container {
 
         padding:
             30px
-            15px
+            14px
             50px;
     }
 
 
     .logo {
 
-        width: 68px;
+        width: 125px;
 
-        height: 68px;
-
-        font-size: 36px;
+        height: 125px;
     }
 
 
-    h1 {
+    .brand h1 {
 
-        font-size: 28px;
+        font-size: 31px;
+
+        letter-spacing: 2px;
     }
 
 
-    .subtitle {
+    .brand-line strong {
 
-        margin-bottom: 24px;
+        font-size: 13px;
     }
 
 
-    .card {
+    .brand-line span {
 
-        padding: 20px;
+        width: 25px;
+    }
 
-        border-radius: 15px;
+
+    .tool-card {
+
+        padding: 21px;
+
+        border-radius: 20px;
+    }
+
+
+    .card-header h2 {
+
+        font-size: 18px;
+    }
+
+
+    .card-icon {
+
+        width: 45px;
+
+        height: 45px;
+
+        font-size: 21px;
     }
 
 
     textarea {
 
-        min-height: 170px;
-
-        font-size: 14px;
+        min-height: 180px;
     }
 
 
-    .buttons {
+    .button-row {
 
         flex-direction: column;
     }
 
 
-    .primary,
-    .secondary {
-
-        flex: none;
+    .convert-btn,
+    .clear-btn {
 
         width: 100%;
+
+        min-height: 50px;
     }
 
 
-    .input-hint {
+    .step-list {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .step {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 13px;
+
+        padding: 15px;
+    }
+
+
+    .step-number {
+
+        flex-shrink: 0;
+
+        margin-bottom: 0;
+    }
+
+
+    .step p {
+
+        margin-top: 2px;
+    }
+
+
+    .community-card {
 
         align-items: flex-start;
 
-        font-size: 12px;
+        padding: 20px;
+
+        gap: 13px;
+    }
+
+
+    .community-icon {
+
+        width: 50px;
+
+        height: 50px;
+
+        font-size: 24px;
+    }
+
+
+    .community-content h2 {
+
+        font-size: 17px;
+    }
+
+
+    .community-content p {
+
+        font-size: 11px;
     }
 
 
     .resultItem {
 
         flex-direction: column;
-
-        align-items: stretch;
     }
 
 
-    .resultItem input {
-
-        width: 100%;
-    }
-
-
+    .resultItem input,
     .resultItem button {
 
         width: 100%;
+    }
+
+
+}
+
+
+/* ==================================================
+   超小螢幕
+================================================== */
+
+@media (max-width: 360px) {
+
+
+    .container {
+
+        padding-left: 10px;
+
+        padding-right: 10px;
+    }
+
+
+    .tool-card {
+
+        padding: 17px;
+    }
+
+
+    .logo {
+
+        width: 110px;
+
+        height: 110px;
+    }
+
+
+    .brand h1 {
+
+        font-size: 28px;
     }
 
 }
