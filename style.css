@@ -50,15 +50,20 @@ body {
 .top-decoration {
     position: fixed;
     inset: 0;
+
     pointer-events: none;
     overflow: hidden;
+
     z-index: -1;
 }
 
 .circle {
     position: absolute;
+
     border-radius: 50%;
+
     opacity: 0.45;
+
     filter: blur(1px);
 }
 
@@ -119,6 +124,7 @@ body {
     margin: 0 auto 16px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 }
@@ -209,6 +215,7 @@ body {
     color: #8797aa;
 
     font-size: 14px;
+
     line-height: 1.6;
 }
 
@@ -255,6 +262,7 @@ body {
     flex-shrink: 0;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -358,8 +366,7 @@ body {
 
     resize: vertical;
 
-    border:
-        2px solid #dce5f0;
+    border: 2px solid #dce5f0;
 
     border-radius: 15px;
 
@@ -555,11 +562,9 @@ body {
     width: 19px;
     height: 19px;
 
-    border:
-        3px solid #e5eaf0;
+    border: 3px solid #e5eaf0;
 
-    border-top-color:
-        #ff6b00;
+    border-top-color: #ff6b00;
 
     border-radius: 50%;
 
@@ -591,8 +596,7 @@ body {
 
     padding: 13px 15px;
 
-    border:
-        1px solid #ffd0c5;
+    border: 1px solid #ffd0c5;
 
     border-radius: 11px;
 
@@ -617,8 +621,7 @@ body {
 
     padding-top: 26px;
 
-    border-top:
-        1px solid #e7edf4;
+    border-top: 1px solid #e7edf4;
 }
 
 
@@ -670,8 +673,7 @@ body {
 
     padding: 0 15px;
 
-    border:
-        1px solid #dce4ed;
+    border: 1px solid #dce4ed;
 
     border-radius: 10px;
 
@@ -872,6 +874,7 @@ body {
     flex-shrink: 0;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -938,8 +941,7 @@ body {
             #f7fffa 100%
         );
 
-    border:
-        1px solid #dcefe4;
+    border: 1px solid #dcefe4;
 
     border-radius: 20px;
 
@@ -960,6 +962,7 @@ body {
     flex-shrink: 0;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -1153,8 +1156,7 @@ footer small {
     }
 
     .community-card {
-        padding:
-            25px;
+        padding: 25px;
     }
 
 }
@@ -1162,9 +1164,10 @@ footer small {
 
 /* ==================================================
    手機
+   注意：改成 900px
 ================================================== */
 
-@media (max-width: 600px) {
+@media (max-width: 900px) {
 
     body {
         background: #f7f9fc;
@@ -1175,11 +1178,22 @@ footer small {
     }
 
     .container {
+        width: 100%;
+
+        max-width: 100%;
+
         padding:
             25px 12px 30px;
     }
 
+
+    /* =========================
+       品牌
+    ========================= */
+
     .brand {
+        width: 100%;
+
         margin-bottom: 24px;
     }
 
@@ -1217,9 +1231,13 @@ footer small {
     }
 
 
-    /* 主卡片 */
+    /* =========================
+       主工具卡片
+    ========================= */
 
     .tool-card {
+        width: 100%;
+
         padding:
             25px 17px 30px;
 
@@ -1233,7 +1251,9 @@ footer small {
     }
 
 
-    /* 卡片標題 */
+    /* =========================
+       卡片標題
+    ========================= */
 
     .card-header {
         gap: 11px;
@@ -1259,7 +1279,9 @@ footer small {
     }
 
 
-    /* 輸入區 */
+    /* =========================
+       輸入區
+    ========================= */
 
     .label-row {
         margin-bottom: 8px;
@@ -1279,6 +1301,8 @@ footer small {
     }
 
     #urlInput {
+        width: 100%;
+
         min-height: 185px;
 
         padding: 15px;
@@ -1295,9 +1319,13 @@ footer small {
     }
 
 
-    /* 按鈕 */
+    /* =========================
+       按鈕
+    ========================= */
 
     .button-row {
+        width: 100%;
+
         gap: 8px;
 
         margin-top: 18px;
@@ -1322,7 +1350,9 @@ footer small {
     }
 
 
-    /* 結果 */
+    /* =========================
+       結果
+    ========================= */
 
     .result {
         margin-top: 25px;
@@ -1367,9 +1397,13 @@ footer small {
     }
 
 
-    /* 使用流程 */
+    /* =========================
+       使用流程
+    ========================= */
 
     .steps {
+        width: 100%;
+
         margin-top: 20px;
 
         padding:
@@ -1408,9 +1442,13 @@ footer small {
     }
 
 
-    /* LINE */
+    /* =========================
+       LINE
+    ========================= */
 
     .community-card {
+        width: 100%;
+
         gap: 13px;
 
         margin-top: 20px;
@@ -1449,7 +1487,9 @@ footer small {
     }
 
 
-    /* 品牌訊息 */
+    /* =========================
+       品牌訊息
+    ========================= */
 
     .brand-message {
         gap: 7px;
@@ -1458,6 +1498,11 @@ footer small {
 
         font-size: 12px;
     }
+
+
+    /* =========================
+       Footer
+    ========================= */
 
     footer {
         margin-top: 18px;
