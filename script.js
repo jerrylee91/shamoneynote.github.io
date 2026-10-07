@@ -41,8 +41,12 @@ function getLinks() {
     const links =
         urlInput.value
             .split(/\r?\n/)
-            .map(url => url.trim())
-            .filter(url => url !== "");
+            .map(
+                url => url.trim()
+            )
+            .filter(
+                url => url !== ""
+            );
 
     // 自動排除重複網址
     return [
@@ -62,6 +66,7 @@ function updateLinkCount() {
 
     linkCount.textContent =
         `${links.length} / 5`;
+
 
     if (links.length > 5) {
 
@@ -138,6 +143,7 @@ convertBtn.addEventListener(
         result.style.display =
             "none";
 
+
         const links =
             getLinks();
 
@@ -179,6 +185,7 @@ convertBtn.addEventListener(
                 url =>
                     !isShopeeUrl(url)
             );
+
 
         if (
             invalidLinks.length > 0
@@ -249,7 +256,7 @@ convertBtn.addEventListener(
 
 
             /* ======================================
-               取得轉換後的短連結
+               確認回傳資料
             ====================================== */
 
             if (
@@ -263,6 +270,10 @@ convertBtn.addEventListener(
                 );
             }
 
+
+            /* ======================================
+               取得轉換後的短連結
+            ====================================== */
 
             const convertedLinks =
                 data.results.map(
@@ -315,6 +326,7 @@ function isShopeeUrl(url) {
             parsedUrl.hostname
                 .toLowerCase();
 
+
         return (
 
             hostname ===
@@ -324,6 +336,17 @@ function isShopeeUrl(url) {
 
             hostname ===
                 "www.shopee.tw"
+
+            ||
+
+            hostname ===
+                "s.shopee.tw"
+
+            ||
+
+            hostname ===
+                "tw.shp.ee"
+
         );
 
     } catch (error) {
@@ -354,11 +377,14 @@ function showResults(
             "p"
         );
 
+
     title.className =
         "result-title";
 
+
     title.textContent =
         `✓ 已產生 ${links.length} 個連結`;
+
 
     result.appendChild(
         title
@@ -377,36 +403,46 @@ function showResults(
                     "div"
                 );
 
+
             item.className =
                 "resultItem";
 
 
-            /* 網址 */
+            /* ==================================
+               網址輸入框
+            ================================== */
 
             const input =
                 document.createElement(
                     "input"
                 );
 
+
             input.type =
                 "text";
 
+
             input.value =
                 url;
+
 
             input.readOnly =
                 true;
 
 
-            /* 複製按鈕 */
+            /* ==================================
+               複製按鈕
+            ================================== */
 
             const button =
                 document.createElement(
                     "button"
                 );
 
+
             button.type =
                 "button";
+
 
             button.textContent =
                 "複製";
@@ -421,10 +457,12 @@ function showResults(
                             url
                         );
 
+
                     if (success) {
 
                         button.textContent =
                             "已複製 ✓";
+
 
                         setTimeout(
                             () => {
@@ -435,6 +473,7 @@ function showResults(
                             },
                             1500
                         );
+
 
                     } else {
 
@@ -451,9 +490,11 @@ function showResults(
                 input
             );
 
+
             item.appendChild(
                 button
             );
+
 
             result.appendChild(
                 item
@@ -472,11 +513,14 @@ function showResults(
             "button"
         );
 
+
     copyAllButton.type =
         "button";
 
+
     copyAllButton.className =
         "copyAll";
+
 
     copyAllButton.textContent =
         "全部複製";
@@ -489,15 +533,18 @@ function showResults(
             const allLinks =
                 links.join("\n");
 
+
             const success =
                 await copyText(
                     allLinks
                 );
 
+
             if (success) {
 
                 copyAllButton.textContent =
                     "全部已複製 ✓";
+
 
                 setTimeout(
                     () => {
@@ -532,7 +579,9 @@ async function copyText(
     text
 ) {
 
-    /* 現代瀏覽器 */
+    /* ==========================================
+       現代瀏覽器
+    ========================================== */
 
     try {
 
@@ -548,6 +597,7 @@ async function copyText(
                     text
                 );
 
+
             return true;
         }
 
@@ -559,7 +609,9 @@ async function copyText(
     }
 
 
-    /* 備用方法 */
+    /* ==========================================
+       備用方法
+    ========================================== */
 
     try {
 
@@ -568,31 +620,40 @@ async function copyText(
                 "textarea"
             );
 
+
         textarea.value =
             text;
+
 
         textarea.style.position =
             "fixed";
 
+
         textarea.style.opacity =
             "0";
+
 
         document.body.appendChild(
             textarea
         );
 
+
         textarea.focus();
 
         textarea.select();
+
 
         const success =
             document.execCommand(
                 "copy"
             );
 
+
         textarea.remove();
 
+
         return success;
+
 
     } catch (error) {
 
@@ -612,13 +673,17 @@ clearBtn.addEventListener(
         urlInput.value =
             "";
 
+
         result.innerHTML =
             "";
+
 
         result.style.display =
             "none";
 
+
         clearError();
+
 
         updateLinkCount();
     }
