@@ -1,871 +1,1011 @@
 /* ==================================================
    蝦賺筆記｜蝦皮推廣連結快速轉換工具
-
-   GitHub Pages
-        ↓
-   Cloudflare Worker
-        ↓
-   Shopee Affiliate API
+   完整 Style
 ================================================== */
 
 
 /* ==================================================
-   Cloudflare Worker API
+   基礎設定
 ================================================== */
 
-const WORKER_API =
-    "https://shopee-affiliate-api.jerry990618.workers.dev";
+* {
+    box-sizing: border-box;
+}
 
+html {
+    margin: 0;
+    padding: 0;
+}
 
-/* ==================================================
-   取得 HTML 元件
-================================================== */
+body {
+    margin: 0;
+    padding: 0;
 
-const convertBtn =
-    document.getElementById("convertBtn");
+    min-height: 100vh;
 
-const clearBtn =
-    document.getElementById("clearBtn");
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Microsoft JhengHei",
+        "Noto Sans TC",
+        Arial,
+        sans-serif;
 
-const urlInput =
-    document.getElementById("urlInput");
+    color: #17365f;
 
-const result =
-    document.getElementById("result");
-
-const loading =
-    document.getElementById("loading");
-
-const error =
-    document.getElementById("error");
-
-const linkCount =
-    document.getElementById("linkCount");
-
-
-/* ==================================================
-   取得網址列表
-================================================== */
-
-function getLinks() {
-
-    const links =
-        urlInput.value
-
-            .split(/\r?\n/)
-
-            .map(
-                url => url.trim()
-            )
-
-            .filter(
-                url => url !== ""
-            );
-
-
-    /*
-     * 自動排除重複網址
-     */
-
-    return [
-        ...new Set(links)
-    ];
-
+    background:
+        linear-gradient(
+            180deg,
+            #fffaf5 0%,
+            #f7f9fc 100%
+        );
 }
 
 
 /* ==================================================
-   更新網址數量
+   主要頁面
 ================================================== */
 
-function updateLinkCount() {
+.container {
+    width: 100%;
 
-    const links =
-        getLinks();
+    max-width: 900px;
 
+    margin: 0 auto;
 
-    linkCount.textContent =
-        `${links.length} / 5`;
-
-
-    if (links.length > 5) {
-
-        linkCount.style.background =
-            "#fff0ed";
-
-        linkCount.style.color =
-            "#d33c24";
-
-    } else {
-
-        linkCount.style.background =
-            "#eef5ff";
-
-        linkCount.style.color =
-            "#2463a6";
-
-    }
-
+    padding: 40px 20px 60px;
 }
 
 
 /* ==================================================
-   顯示錯誤
+   主卡片
 ================================================== */
 
-function showError(message) {
+.card {
+    width: 100%;
 
-    error.textContent =
-        message;
+    padding: 38px;
 
-    error.style.display =
-        "block";
+    background: #ffffff;
 
+    border-radius: 24px;
+
+    border-top: 5px solid #ff6b00;
+
+    box-shadow:
+        0 12px 40px
+        rgba(22, 52, 95, 0.08);
 }
 
 
 /* ==================================================
-   清除錯誤
+   Header
 ================================================== */
 
-function clearError() {
+.header {
+    display: flex;
 
-    error.textContent =
-        "";
+    align-items: center;
 
-    error.style.display =
-        "none";
+    gap: 18px;
 
+    margin-bottom: 34px;
 }
 
 
 /* ==================================================
-   使用者輸入
+   Logo
 ================================================== */
 
-urlInput.addEventListener(
-    "input",
-    () => {
+.logo {
+    width: 70px;
 
-        updateLinkCount();
+    height: 70px;
 
-        clearError();
+    flex-shrink: 0;
 
-    }
-);
+    object-fit: contain;
+
+    border-radius: 18px;
+
+    background: #fff4e8;
+
+    padding: 7px;
+}
 
 
 /* ==================================================
-   產生推廣連結
+   標題
 ================================================== */
 
-convertBtn.addEventListener(
-    "click",
-    async () => {
+.header-text {
+    min-width: 0;
+}
 
-        clearError();
+.header-text h1 {
+    margin: 0 0 6px;
 
-        result.style.display =
-            "none";
+    color: #17365f;
 
+    font-size: 30px;
 
-        const links =
-            getLinks();
+    font-weight: 800;
 
+    line-height: 1.3;
+}
 
-        /* ==========================================
-           沒有網址
-        ========================================== */
+.header-text p {
+    margin: 0;
 
-        if (links.length === 0) {
+    color: #8b9bb0;
 
-            showError(
-                "請至少貼上一個蝦皮商品網址"
-            );
+    font-size: 15px;
 
-            return;
-
-        }
-
-
-        /* ==========================================
-           超過 5 個
-        ========================================== */
-
-        if (links.length > 5) {
-
-            showError(
-                "一次最多只能貼 5 個網址"
-            );
-
-            return;
-
-        }
-
-
-        /* ==========================================
-           檢查網址
-        ========================================== */
-
-        const invalidLinks =
-            links.filter(
-                url =>
-                    !isShopeeUrl(url)
-            );
-
-
-        if (
-            invalidLinks.length > 0
-        ) {
-
-            showError(
-                "其中有不是蝦皮的網址，請檢查後再試"
-            );
-
-            return;
-
-        }
-
-
-        /* ==========================================
-           顯示 Loading
-        ========================================== */
-
-        loading.style.display =
-            "flex";
-
-
-        convertBtn.disabled =
-            true;
-
-
-        try {
-
-            /* ======================================
-               呼叫 Cloudflare Worker
-            ====================================== */
-
-            const response =
-                await fetch(
-                    WORKER_API,
-                    {
-                        method: "POST",
-
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        body:
-                            JSON.stringify({
-                                urls: links
-                            })
-                    }
-                );
-
-
-            /* ======================================
-               取得 API 回應
-            ====================================== */
-
-            const data =
-                await response.json();
-
-
-            /* ======================================
-               API 錯誤
-            ====================================== */
-
-            if (
-                !response.ok ||
-                !data.success
-            ) {
-
-                throw new Error(
-                    data.error ||
-                    "推廣連結產生失敗"
-                );
-
-            }
-
-
-            /* ======================================
-               取得轉換結果
-            ====================================== */
-
-            const convertedLinks =
-                data.results
-                    .map(
-                        item =>
-                            item.shortLink
-                    )
-                    .filter(
-                        link =>
-                            typeof link === "string" &&
-                            link.length > 0
-                    );
-
-
-            if (
-                convertedLinks.length === 0
-            ) {
-
-                throw new Error(
-                    "沒有取得有效的推廣連結"
-                );
-
-            }
-
-
-            /* ======================================
-               顯示結果
-            ====================================== */
-
-            showResults(
-                convertedLinks
-            );
-
-
-        } catch (err) {
-
-            console.error(
-                "轉換錯誤：",
-                err
-            );
-
-
-            showError(
-                err.message ||
-                "轉換時發生錯誤，請稍後再試"
-            );
-
-
-        } finally {
-
-            loading.style.display =
-                "none";
-
-
-            convertBtn.disabled =
-                false;
-
-        }
-
-    }
-);
+    line-height: 1.5;
+}
 
 
 /* ==================================================
-   判斷蝦皮網址
+   區塊標題
 ================================================== */
 
-function isShopeeUrl(url) {
+.section-title {
+    display: flex;
 
-    try {
+    align-items: center;
 
-        const parsedUrl =
-            new URL(url);
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-bottom: 12px;
+}
+
+.section-title h2 {
+    margin: 0;
+
+    color: #17365f;
+
+    font-size: 20px;
+
+    font-weight: 800;
+}
 
 
-        const hostname =
-            parsedUrl.hostname
-                .toLowerCase();
+/* ==================================================
+   網址數量
+================================================== */
+
+#linkCount {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-width: 48px;
+
+    height: 30px;
+
+    padding: 0 11px;
+
+    border-radius: 20px;
+
+    background: #eef5ff;
+
+    color: #2463a6;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
 
 
-        return (
+/* ==================================================
+   網址輸入區
+================================================== */
 
-            hostname ===
-                "shopee.tw"
+#urlInput {
+    width: 100%;
 
-            ||
+    min-height: 210px;
 
-            hostname ===
-                "www.shopee.tw"
+    padding: 20px;
 
-            ||
+    resize: vertical;
 
-            hostname ===
-                "s.shopee.tw"
+    border:
+        2px solid #dce5f0;
 
-            ||
+    border-radius: 16px;
 
-            hostname ===
-                "tw.shp.ee"
+    outline: none;
 
+    background: #fbfcfe;
+
+    color: #304c70;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Microsoft JhengHei",
+        "Noto Sans TC",
+        Arial,
+        sans-serif;
+
+    font-size: 15px;
+
+    line-height: 1.8;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+#urlInput::placeholder {
+    color: #a4b1c1;
+}
+
+#urlInput:focus {
+    background: #ffffff;
+
+    border-color: #ff8a26;
+
+    box-shadow:
+        0 0 0 4px
+        rgba(255, 107, 0, 0.08);
+}
+
+
+/* ==================================================
+   提示文字
+================================================== */
+
+.input-tip {
+    margin-top: 10px;
+
+    color: #91a0b2;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+
+/* ==================================================
+   操作按鈕區
+================================================== */
+
+.action-row {
+    display: flex;
+
+    gap: 12px;
+
+    margin-top: 22px;
+}
+
+
+/* ==================================================
+   產生按鈕
+================================================== */
+
+#convertBtn {
+    flex: 1;
+
+    min-height: 58px;
+
+    border: none;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff6900,
+            #ff9300
         );
 
+    color: #ffffff;
 
-    } catch (error) {
+    font-size: 17px;
 
-        return false;
+    font-weight: 800;
 
+    cursor: pointer;
+
+    box-shadow:
+        0 7px 18px
+        rgba(255, 107, 0, 0.18);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease;
+}
+
+#convertBtn:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 10px 22px
+        rgba(255, 107, 0, 0.24);
+}
+
+#convertBtn:active {
+    transform: translateY(0);
+}
+
+#convertBtn:disabled {
+    opacity: 0.6;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+/* ==================================================
+   清除按鈕
+================================================== */
+
+#clearBtn {
+    width: 110px;
+
+    min-height: 58px;
+
+    border: none;
+
+    border-radius: 14px;
+
+    background: #edf1f6;
+
+    color: #62738a;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+#clearBtn:hover {
+    background: #e2e8f0;
+
+    color: #314968;
+}
+
+
+/* ==================================================
+   錯誤訊息
+================================================== */
+
+#error {
+    display: none;
+
+    margin-top: 16px;
+
+    padding: 13px 15px;
+
+    border:
+        1px solid #ffd0c5;
+
+    border-radius: 11px;
+
+    background: #fff4f1;
+
+    color: #d33c24;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+
+/* ==================================================
+   Loading
+================================================== */
+
+#loading {
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-top: 20px;
+
+    color: #77879b;
+
+    font-size: 14px;
+}
+
+#loading::before {
+    content: "";
+
+    width: 19px;
+
+    height: 19px;
+
+    border:
+        3px solid #e5eaf0;
+
+    border-top-color:
+        #ff6b00;
+
+    border-radius: 50%;
+
+    animation:
+        spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
     }
 
 }
 
 
 /* ==================================================
-   判斷手機
+   結果區
 ================================================== */
 
-function isMobileDevice() {
+#result {
+    display: none;
 
-    return window.matchMedia(
-        "(max-width: 600px)"
-    ).matches;
+    margin-top: 30px;
 
+    padding-top: 26px;
+
+    border-top:
+        1px solid #e7edf4;
 }
 
 
 /* ==================================================
-   開啟推廣連結
+   結果標題
 ================================================== */
 
-function openAffiliateLink(url) {
+.result-title {
+    margin: 0 0 16px;
 
-    /*
-     * 手機：
-     * 直接在目前頁面開啟
-     */
+    color: #17365f;
 
-    if (isMobileDevice()) {
+    font-size: 19px;
 
-        window.location.href =
-            url;
+    font-weight: 800;
+}
 
-        return;
 
+/* ==================================================
+   單筆結果
+================================================== */
+
+.resultItem {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    width: 100%;
+
+    margin-bottom: 10px;
+}
+
+
+/* ==================================================
+   可直接點擊的推廣網址
+================================================== */
+
+.result-link {
+    flex: 1;
+
+    min-width: 0;
+
+    height: 50px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 0 15px;
+
+    border:
+        1px solid #dce4ed;
+
+    border-radius: 10px;
+
+    background: #f8fafc;
+
+    color: #315b91;
+
+    font-size: 14px;
+
+    line-height: 1.4;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* 滑鼠移過 */
+
+.result-link:hover {
+    background: #fff8f1;
+
+    border-color: #ffb36b;
+
+    color: #ff6b00;
+
+    text-decoration: underline;
+
+    box-shadow:
+        0 3px 10px
+        rgba(255, 107, 0, 0.07);
+}
+
+
+/* 點擊 */
+
+.result-link:active {
+    background: #fff0e3;
+}
+
+
+/* ==================================================
+   單筆複製按鈕
+================================================== */
+
+.resultItem button {
+    width: 82px;
+
+    height: 50px;
+
+    flex-shrink: 0;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #17365f;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.resultItem button:hover {
+    background: #245080;
+
+    transform: translateY(-1px);
+}
+
+.resultItem button:active {
+    transform: translateY(0);
+}
+
+
+/* ==================================================
+   全部複製
+================================================== */
+
+.copyAll {
+    width: 100%;
+
+    min-height: 54px;
+
+    margin-top: 7px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #17365f;
+
+    color: #ffffff;
+
+    font-size: 16px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.copyAll:hover {
+    background: #245080;
+
+    transform: translateY(-1px);
+}
+
+.copyAll:active {
+    transform: translateY(0);
+}
+
+
+/* ==================================================
+   LINE 社群按鈕
+================================================== */
+
+.community-btn {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+    width: 100%;
+
+    min-height: 54px;
+
+    margin-top: 24px;
+
+    border-radius: 13px;
+
+    background: #06c755;
+
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 16px;
+
+    font-weight: 800;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.community-btn span {
+    font-size: 19px;
+
+    line-height: 1;
+}
+
+.community-btn:hover {
+    background: #05b94f;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 6px 16px
+        rgba(6, 199, 85, 0.18);
+}
+
+.community-btn:active {
+    transform: translateY(0);
+}
+
+
+/* ==================================================
+   Footer
+================================================== */
+
+.footer {
+    margin-top: 25px;
+
+    text-align: center;
+
+    color: #98a6b8;
+
+    font-size: 12px;
+
+    line-height: 1.7;
+}
+
+.footer a {
+    color: #72849b;
+
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: #ff6b00;
+
+    text-decoration: underline;
+}
+
+
+/* ==================================================
+   平板
+================================================== */
+
+@media (max-width: 768px) {
+
+    .container {
+        padding:
+            28px 16px 45px;
     }
 
-
-    /*
-     * 電腦：
-     * 開啟新分頁
-     */
-
-    window.open(
-        url,
-        "_blank",
-        "noopener,noreferrer"
-    );
-
-}
-
-
-/* ==================================================
-   顯示結果
-================================================== */
-
-function showResults(
-    links
-) {
-
-    result.innerHTML =
-        "";
-
-
-    /* ==========================================
-       結果標題
-    ========================================== */
-
-    const title =
-        document.createElement(
-            "p"
-        );
-
-
-    title.className =
-        "result-title";
-
-
-    title.textContent =
-        `✓ 已產生 ${links.length} 個連結`;
-
-
-    result.appendChild(
-        title
-    );
-
-
-    /* ==========================================
-       每一個連結
-    ========================================== */
-
-    links.forEach(
-        url => {
-
-            const item =
-                document.createElement(
-                    "div"
-                );
-
-
-            item.className =
-                "resultItem";
-
-
-            /* ==================================
-               可直接點擊的網址
-            ================================== */
-
-            const link =
-                document.createElement(
-                    "a"
-                );
-
-
-            link.href =
-                url;
-
-
-            link.textContent =
-                url;
-
-
-            link.className =
-                "result-link";
-
-
-            link.title =
-                "點擊開啟推廣連結";
-
-
-            /*
-             * 電腦：
-             * 新分頁
-             *
-             * 手機：
-             * 目前頁面直接跳轉
-             */
-
-            link.addEventListener(
-                "click",
-                function(event) {
-
-                    event.preventDefault();
-
-                    openAffiliateLink(
-                        url
-                    );
-
-                }
-            );
-
-
-            /* ==================================
-               複製按鈕
-            ================================== */
-
-            const button =
-                document.createElement(
-                    "button"
-                );
-
-
-            button.type =
-                "button";
-
-
-            button.textContent =
-                "複製";
-
-
-            button.addEventListener(
-                "click",
-                async () => {
-
-                    const success =
-                        await copyText(
-                            url
-                        );
-
-
-                    if (success) {
-
-                        button.textContent =
-                            "已複製 ✓";
-
-
-                        setTimeout(
-                            () => {
-
-                                button.textContent =
-                                    "複製";
-
-                            },
-                            1500
-                        );
-
-
-                    } else {
-
-                        /*
-                         * 備用：
-                         * 手動選取
-                         */
-
-                        const tempInput =
-                            document.createElement(
-                                "input"
-                            );
-
-
-                        tempInput.value =
-                            url;
-
-
-                        document.body.appendChild(
-                            tempInput
-                        );
-
-
-                        tempInput.select();
-
-
-                        alert(
-                            "複製失敗，請手動複製已選取的網址"
-                        );
-
-
-                        tempInput.remove();
-
-                    }
-
-                }
-            );
-
-
-            /* ==================================
-               加入結果區
-            ================================== */
-
-            item.appendChild(
-                link
-            );
-
-
-            item.appendChild(
-                button
-            );
-
-
-            result.appendChild(
-                item
-            );
-
-        }
-    );
-
-
-    /* ==========================================
-       全部複製
-    ========================================== */
-
-    const copyAllButton =
-        document.createElement(
-            "button"
-        );
-
-
-    copyAllButton.type =
-        "button";
-
-
-    copyAllButton.className =
-        "copyAll";
-
-
-    copyAllButton.textContent =
-        "全部複製";
-
-
-    copyAllButton.addEventListener(
-        "click",
-        async () => {
-
-            const allLinks =
-                links.join("\n");
-
-
-            const success =
-                await copyText(
-                    allLinks
-                );
-
-
-            if (success) {
-
-                copyAllButton.textContent =
-                    "全部已複製 ✓";
-
-
-                setTimeout(
-                    () => {
-
-                        copyAllButton.textContent =
-                            "全部複製";
-
-                    },
-                    1500
-                );
-
-            } else {
-
-                alert(
-                    "複製失敗，請手動複製"
-                );
-
-            }
-
-        }
-    );
-
-
-    result.appendChild(
-        copyAllButton
-    );
-
-
-    result.style.display =
-        "block";
-
-}
-
-
-/* ==================================================
-   複製文字
-================================================== */
-
-async function copyText(
-    text
-) {
-
-    /* ==========================================
-       現代瀏覽器
-    ========================================== */
-
-    try {
-
-        if (
-            navigator.clipboard
-            &&
-            window.isSecureContext
-        ) {
-
-            await navigator
-                .clipboard
-                .writeText(
-                    text
-                );
-
-            return true;
-
-        }
-
-    } catch (error) {
-
-        console.log(
-            "Clipboard API failed"
-        );
-
+    .card {
+        padding:
+            30px 25px 34px;
     }
 
+    .header {
+        margin-bottom: 28px;
+    }
 
-    /* ==========================================
-       備用方法
-    ========================================== */
-
-    try {
-
-        const textarea =
-            document.createElement(
-                "textarea"
-            );
-
-
-        textarea.value =
-            text;
-
-
-        textarea.style.position =
-            "fixed";
-
-
-        textarea.style.left =
-            "-9999px";
-
-
-        textarea.style.top =
-            "0";
-
-
-        textarea.style.opacity =
-            "0";
-
-
-        document.body.appendChild(
-            textarea
-        );
-
-
-        textarea.focus();
-
-
-        textarea.select();
-
-
-        const success =
-            document.execCommand(
-                "copy"
-            );
-
-
-        textarea.remove();
-
-
-        return success;
-
-
-    } catch (error) {
-
-        return false;
-
+    .header-text h1 {
+        font-size: 27px;
     }
 
 }
 
 
 /* ==================================================
-   清除
+   手機
 ================================================== */
 
-clearBtn.addEventListener(
-    "click",
-    () => {
+@media (max-width: 600px) {
 
-        urlInput.value =
-            "";
-
-
-        result.innerHTML =
-            "";
-
-
-        result.style.display =
-            "none";
-
-
-        clearError();
-
-
-        updateLinkCount();
-
+    body {
+        background: #f7f9fc;
     }
-);
+
+
+    .container {
+        padding:
+            0 0 30px;
+    }
+
+
+    .card {
+        min-height: 100vh;
+
+        padding:
+            25px 17px 35px;
+
+        border-radius: 0;
+
+        border-top-width: 5px;
+
+        box-shadow: none;
+    }
+
+
+    .header {
+        gap: 13px;
+
+        margin-bottom: 27px;
+    }
+
+
+    .logo {
+        width: 56px;
+
+        height: 56px;
+
+        border-radius: 15px;
+
+        padding: 6px;
+    }
+
+
+    .header-text h1 {
+        font-size: 22px;
+    }
+
+
+    .header-text p {
+        font-size: 12px;
+    }
+
+
+    .section-title h2 {
+        font-size: 18px;
+    }
+
+
+    #linkCount {
+        min-width: 44px;
+
+        height: 29px;
+
+        padding: 0 9px;
+
+        font-size: 12px;
+    }
+
+
+    #urlInput {
+        min-height: 185px;
+
+        padding: 15px;
+
+        border-radius: 13px;
+
+        font-size: 14px;
+
+        line-height: 1.8;
+    }
+
+
+    .input-tip {
+        font-size: 12px;
+    }
+
+
+    .action-row {
+        gap: 8px;
+
+        margin-top: 19px;
+    }
+
+
+    #convertBtn {
+        min-height: 56px;
+
+        border-radius: 12px;
+
+        font-size: 16px;
+    }
+
+
+    #clearBtn {
+        width: 82px;
+
+        min-height: 56px;
+
+        border-radius: 12px;
+
+        font-size: 14px;
+    }
+
+
+    #result {
+        margin-top: 27px;
+
+        padding-top: 23px;
+    }
+
+
+    .result-title {
+        font-size: 18px;
+    }
+
+
+    .resultItem {
+        gap: 7px;
+    }
+
+
+    .result-link {
+        height: 48px;
+
+        padding: 0 11px;
+
+        border-radius: 9px;
+
+        font-size: 12px;
+    }
+
+
+    .resultItem button {
+        width: 70px;
+
+        height: 48px;
+
+        border-radius: 9px;
+
+        font-size: 13px;
+    }
+
+
+    .copyAll {
+        min-height: 52px;
+
+        border-radius: 11px;
+
+        font-size: 15px;
+    }
+
+
+    .community-btn {
+        min-height: 51px;
+
+        border-radius: 11px;
+
+        font-size: 15px;
+    }
+
+
+    .footer {
+        font-size: 11px;
+    }
+
+}
 
 
 /* ==================================================
-   初始化
+   超小手機
 ================================================== */
 
-updateLinkCount();
+@media (max-width: 380px) {
+
+    .card {
+        padding-left: 13px;
+
+        padding-right: 13px;
+    }
+
+
+    .header-text h1 {
+        font-size: 20px;
+    }
+
+
+    .header-text p {
+        font-size: 11px;
+    }
+
+
+    #convertBtn {
+        font-size: 15px;
+    }
+
+
+    #clearBtn {
+        width: 74px;
+
+        font-size: 13px;
+    }
+
+
+    .result-link {
+        font-size: 11px;
+
+        padding: 0 9px;
+    }
+
+
+    .resultItem button {
+        width: 64px;
+
+        font-size: 12px;
+    }
+
+}
