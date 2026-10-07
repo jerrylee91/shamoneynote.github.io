@@ -1,4 +1,12 @@
 /* ==================================================
+   Cloudflare Worker API
+================================================== */
+
+const WORKER_API =
+    "https://shopee-affiliate-api.jerry990618.workers.dev";
+
+
+/* ==================================================
    取得 HTML 元件
 ================================================== */
 
@@ -31,28 +39,15 @@ const linkCount =
 function getLinks() {
 
     const links =
-
         urlInput.value
-
             .split(/\r?\n/)
+            .map(url => url.trim())
+            .filter(url => url !== "");
 
-            .map(
-                url => url.trim()
-            )
-
-            .filter(
-                url => url !== ""
-            );
-
-
-    /*
-     * 自動排除重複網址
-     */
-
+    // 自動排除重複網址
     return [
         ...new Set(links)
     ];
-
 }
 
 
@@ -65,10 +60,8 @@ function updateLinkCount() {
     const links =
         getLinks();
 
-
     linkCount.textContent =
         `${links.length} / 5`;
-
 
     if (links.length > 5) {
 
@@ -85,9 +78,7 @@ function updateLinkCount() {
 
         linkCount.style.color =
             "#2463a6";
-
     }
-
 }
 
 
@@ -102,7 +93,6 @@ function showError(message) {
 
     error.style.display =
         "block";
-
 }
 
 
@@ -117,7 +107,6 @@ function clearError() {
 
     error.style.display =
         "none";
-
 }
 
 
@@ -132,7 +121,6 @@ urlInput.addEventListener(
         updateLinkCount();
 
         clearError();
-
     }
 );
 
@@ -145,13 +133,10 @@ convertBtn.addEventListener(
     "click",
     async () => {
 
-
         clearError();
-
 
         result.style.display =
             "none";
-
 
         const links =
             getLinks();
@@ -168,7 +153,6 @@ convertBtn.addEventListener(
             );
 
             return;
-
         }
 
 
@@ -183,7 +167,6 @@ convertBtn.addEventListener(
             );
 
             return;
-
         }
 
 
@@ -197,7 +180,6 @@ convertBtn.addEventListener(
                     !isShopeeUrl(url)
             );
 
-
         if (
             invalidLinks.length > 0
         ) {
@@ -207,7 +189,6 @@ convertBtn.addEventListener(
             );
 
             return;
-
         }
 
 
@@ -221,28 +202,78 @@ convertBtn.addEventListener(
 
         try {
 
+            /* ======================================
+               呼叫 Cloudflare Worker
+            ====================================== */
 
-            /*
-             * ========================================
-             * API 預留區
-             * ========================================
-             *
-             * 目前還沒有接蝦皮 API，
-             * 所以暫時把原始網址當作結果。
-             *
-             * 之後拿到 API 後，
-             * 只需要修改這裡。
-             */
+            const response =
+                await fetch(
+                    WORKER_API,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            urls: links
+                        })
+                    }
+                );
 
 
-            await wait(800);
+            /* ======================================
+               取得 API 回應
+            ====================================== */
+
+            const data =
+                await response.json();
+
+
+            /* ======================================
+               API 發生錯誤
+            ====================================== */
+
+            if (
+                !response.ok ||
+                !data.success
+            ) {
+
+                throw new Error(
+                    data.error ||
+                    "轉換失敗"
+                );
+            }
+
+
+            /* ======================================
+               取得轉換後的短連結
+            ====================================== */
+
+            if (
+                !Array.isArray(
+                    data.results
+                )
+            ) {
+
+                throw new Error(
+                    "API 回傳資料格式錯誤"
+                );
+            }
 
 
             const convertedLinks =
-                links.map(
-                    url => url
+                data.results.map(
+                    item =>
+                        item.shortLink
                 );
 
+
+            /* ======================================
+               顯示結果
+            ====================================== */
 
             showResults(
                 convertedLinks
@@ -251,21 +282,18 @@ convertBtn.addEventListener(
 
         } catch (err) {
 
-
             console.error(err);
 
-
             showError(
+                err.message ||
                 "轉換時發生錯誤，請稍後再試"
             );
 
 
         } finally {
 
-
             loading.style.display =
                 "none";
-
         }
 
     }
@@ -283,11 +311,9 @@ function isShopeeUrl(url) {
         const parsedUrl =
             new URL(url);
 
-
         const hostname =
             parsedUrl.hostname
                 .toLowerCase();
-
 
         return (
 
@@ -298,16 +324,12 @@ function isShopeeUrl(url) {
 
             hostname ===
                 "www.shopee.tw"
-
         );
-
 
     } catch (error) {
 
         return false;
-
     }
-
 }
 
 
@@ -318,7 +340,6 @@ function isShopeeUrl(url) {
 function showResults(
     links
 ) {
-
 
     result.innerHTML =
         "";
@@ -333,14 +354,11 @@ function showResults(
             "p"
         );
 
-
     title.className =
         "result-title";
 
-
     title.textContent =
         `✓ 已產生 ${links.length} 個連結`;
-
 
     result.appendChild(
         title
@@ -354,12 +372,10 @@ function showResults(
     links.forEach(
         url => {
 
-
             const item =
                 document.createElement(
                     "div"
                 );
-
 
             item.className =
                 "resultItem";
@@ -372,14 +388,11 @@ function showResults(
                     "input"
                 );
 
-
             input.type =
                 "text";
 
-
             input.value =
                 url;
-
 
             input.readOnly =
                 true;
@@ -392,10 +405,8 @@ function showResults(
                     "button"
                 );
 
-
             button.type =
                 "button";
-
 
             button.textContent =
                 "複製";
@@ -405,19 +416,15 @@ function showResults(
                 "click",
                 async () => {
 
-
                     const success =
                         await copyText(
                             url
                         );
 
-
                     if (success) {
-
 
                         button.textContent =
                             "已複製 ✓";
-
 
                         setTimeout(
                             () => {
@@ -429,14 +436,11 @@ function showResults(
                             1500
                         );
 
-
                     } else {
-
 
                         input.focus();
 
                         input.select();
-
                     }
 
                 }
@@ -447,11 +451,9 @@ function showResults(
                 input
             );
 
-
             item.appendChild(
                 button
             );
-
 
             result.appendChild(
                 item
@@ -470,14 +472,11 @@ function showResults(
             "button"
         );
 
-
     copyAllButton.type =
         "button";
 
-
     copyAllButton.className =
         "copyAll";
-
 
     copyAllButton.textContent =
         "全部複製";
@@ -487,23 +486,18 @@ function showResults(
         "click",
         async () => {
 
-
             const allLinks =
                 links.join("\n");
-
 
             const success =
                 await copyText(
                     allLinks
                 );
 
-
             if (success) {
-
 
                 copyAllButton.textContent =
                     "全部已複製 ✓";
-
 
                 setTimeout(
                     () => {
@@ -514,7 +508,6 @@ function showResults(
                     },
                     1500
                 );
-
             }
 
         }
@@ -528,7 +521,6 @@ function showResults(
 
     result.style.display =
         "block";
-
 }
 
 
@@ -540,11 +532,9 @@ async function copyText(
     text
 ) {
 
-
     /* 現代瀏覽器 */
 
     try {
-
 
         if (
             navigator.clipboard
@@ -552,25 +542,20 @@ async function copyText(
             window.isSecureContext
         ) {
 
-
             await navigator
                 .clipboard
                 .writeText(
                     text
                 );
 
-
             return true;
-
         }
-
 
     } catch (error) {
 
         console.log(
             "Clipboard API failed"
         );
-
     }
 
 
@@ -578,54 +563,41 @@ async function copyText(
 
     try {
 
-
         const textarea =
             document.createElement(
                 "textarea"
             );
 
-
         textarea.value =
             text;
-
 
         textarea.style.position =
             "fixed";
 
-
         textarea.style.opacity =
             "0";
-
 
         document.body.appendChild(
             textarea
         );
 
-
         textarea.focus();
 
-
         textarea.select();
-
 
         const success =
             document.execCommand(
                 "copy"
             );
 
-
         textarea.remove();
 
-
         return success;
-
 
     } catch (error) {
 
         return false;
-
     }
-
 }
 
 
@@ -637,48 +609,20 @@ clearBtn.addEventListener(
     "click",
     () => {
 
-
         urlInput.value =
             "";
-
 
         result.innerHTML =
             "";
 
-
         result.style.display =
             "none";
 
-
         clearError();
 
-
         updateLinkCount();
-
     }
 );
-
-
-/* ==================================================
-   等待工具
-================================================== */
-
-function wait(
-    milliseconds
-) {
-
-    return new Promise(
-        resolve => {
-
-            setTimeout(
-                resolve,
-                milliseconds
-            );
-
-        }
-    );
-
-}
 
 
 /* ==================================================
