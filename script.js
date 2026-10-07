@@ -1,4 +1,14 @@
 /* ==================================================
+   蝦賺筆記｜蝦皮推廣連結快速轉換工具
+   GitHub Pages
+   ↓
+   Cloudflare Worker
+   ↓
+   Shopee Affiliate API
+================================================== */
+
+
+/* ==================================================
    Cloudflare Worker API
 ================================================== */
 
@@ -48,10 +58,15 @@ function getLinks() {
                 url => url !== ""
             );
 
-    // 自動排除重複網址
+
+    /*
+     * 自動排除重複網址
+     */
+
     return [
         ...new Set(links)
     ];
+
 }
 
 
@@ -63,6 +78,7 @@ function updateLinkCount() {
 
     const links =
         getLinks();
+
 
     linkCount.textContent =
         `${links.length} / 5`;
@@ -83,7 +99,9 @@ function updateLinkCount() {
 
         linkCount.style.color =
             "#2463a6";
+
     }
+
 }
 
 
@@ -98,6 +116,7 @@ function showError(message) {
 
     error.style.display =
         "block";
+
 }
 
 
@@ -112,6 +131,7 @@ function clearError() {
 
     error.style.display =
         "none";
+
 }
 
 
@@ -126,6 +146,7 @@ urlInput.addEventListener(
         updateLinkCount();
 
         clearError();
+
     }
 );
 
@@ -138,7 +159,9 @@ convertBtn.addEventListener(
     "click",
     async () => {
 
+
         clearError();
+
 
         result.style.display =
             "none";
@@ -159,6 +182,7 @@ convertBtn.addEventListener(
             );
 
             return;
+
         }
 
 
@@ -173,6 +197,7 @@ convertBtn.addEventListener(
             );
 
             return;
+
         }
 
 
@@ -196,6 +221,7 @@ convertBtn.addEventListener(
             );
 
             return;
+
         }
 
 
@@ -207,7 +233,12 @@ convertBtn.addEventListener(
             "flex";
 
 
+        convertBtn.disabled =
+            true;
+
+
         try {
+
 
             /* ======================================
                呼叫 Cloudflare Worker
@@ -224,9 +255,10 @@ convertBtn.addEventListener(
                                 "application/json"
                         },
 
-                        body: JSON.stringify({
-                            urls: links
-                        })
+                        body:
+                            JSON.stringify({
+                                urls: links
+                            })
                     }
                 );
 
@@ -240,7 +272,7 @@ convertBtn.addEventListener(
 
 
             /* ======================================
-               API 發生錯誤
+               API 錯誤
             ====================================== */
 
             if (
@@ -250,36 +282,38 @@ convertBtn.addEventListener(
 
                 throw new Error(
                     data.error ||
-                    "轉換失敗"
+                    "推廣連結產生失敗"
                 );
+
             }
 
 
             /* ======================================
-               確認回傳資料
-            ====================================== */
-
-            if (
-                !Array.isArray(
-                    data.results
-                )
-            ) {
-
-                throw new Error(
-                    "API 回傳資料格式錯誤"
-                );
-            }
-
-
-            /* ======================================
-               取得轉換後的短連結
+               取得轉換結果
             ====================================== */
 
             const convertedLinks =
-                data.results.map(
-                    item =>
-                        item.shortLink
+                data.results
+                    .map(
+                        item =>
+                            item.shortLink
+                    )
+                    .filter(
+                        link =>
+                            typeof link === "string" &&
+                            link.length > 0
+                    );
+
+
+            if (
+                convertedLinks.length === 0
+            ) {
+
+                throw new Error(
+                    "沒有取得有效的推廣連結"
                 );
+
+            }
 
 
             /* ======================================
@@ -293,7 +327,12 @@ convertBtn.addEventListener(
 
         } catch (err) {
 
-            console.error(err);
+
+            console.error(
+                "轉換錯誤：",
+                err
+            );
+
 
             showError(
                 err.message ||
@@ -303,8 +342,14 @@ convertBtn.addEventListener(
 
         } finally {
 
+
             loading.style.display =
                 "none";
+
+
+            convertBtn.disabled =
+                false;
+
         }
 
     }
@@ -321,6 +366,7 @@ function isShopeeUrl(url) {
 
         const parsedUrl =
             new URL(url);
+
 
         const hostname =
             parsedUrl.hostname
@@ -349,10 +395,13 @@ function isShopeeUrl(url) {
 
         );
 
+
     } catch (error) {
 
         return false;
+
     }
+
 }
 
 
@@ -363,6 +412,7 @@ function isShopeeUrl(url) {
 function showResults(
     links
 ) {
+
 
     result.innerHTML =
         "";
@@ -398,6 +448,7 @@ function showResults(
     links.forEach(
         url => {
 
+
             const item =
                 document.createElement(
                     "div"
@@ -409,25 +460,37 @@ function showResults(
 
 
             /* ==================================
-               網址輸入框
+               可直接點擊的網址
             ================================== */
 
-            const input =
+            const link =
                 document.createElement(
-                    "input"
+                    "a"
                 );
 
 
-            input.type =
-                "text";
-
-
-            input.value =
+            link.href =
                 url;
 
 
-            input.readOnly =
-                true;
+            link.target =
+                "_blank";
+
+
+            link.rel =
+                "noopener noreferrer";
+
+
+            link.textContent =
+                url;
+
+
+            link.className =
+                "result-link";
+
+
+            link.title =
+                "點擊開啟推廣連結";
 
 
             /* ==================================
@@ -452,6 +515,7 @@ function showResults(
                 "click",
                 async () => {
 
+
                     const success =
                         await copyText(
                             url
@@ -459,6 +523,7 @@ function showResults(
 
 
                     if (success) {
+
 
                         button.textContent =
                             "已複製 ✓";
@@ -477,17 +542,28 @@ function showResults(
 
                     } else {
 
-                        input.focus();
 
-                        input.select();
+                        /*
+                         * 如果瀏覽器禁止自動複製
+                         * 就提示使用者手動複製
+                         */
+
+                        alert(
+                            "複製失敗，請手動選取網址複製"
+                        );
+
                     }
 
                 }
             );
 
 
+            /* ==================================
+               加入結果區
+            ================================== */
+
             item.appendChild(
-                input
+                link
             );
 
 
@@ -530,6 +606,7 @@ function showResults(
         "click",
         async () => {
 
+
             const allLinks =
                 links.join("\n");
 
@@ -541,6 +618,7 @@ function showResults(
 
 
             if (success) {
+
 
                 copyAllButton.textContent =
                     "全部已複製 ✓";
@@ -555,6 +633,14 @@ function showResults(
                     },
                     1500
                 );
+
+            } else {
+
+
+                alert(
+                    "複製失敗，請手動複製"
+                );
+
             }
 
         }
@@ -568,6 +654,7 @@ function showResults(
 
     result.style.display =
         "block";
+
 }
 
 
@@ -579,17 +666,20 @@ async function copyText(
     text
 ) {
 
+
     /* ==========================================
-       現代瀏覽器
+       現代瀏覽器 Clipboard API
     ========================================== */
 
     try {
+
 
         if (
             navigator.clipboard
             &&
             window.isSecureContext
         ) {
+
 
             await navigator
                 .clipboard
@@ -599,21 +689,25 @@ async function copyText(
 
 
             return true;
+
         }
+
 
     } catch (error) {
 
         console.log(
             "Clipboard API failed"
         );
+
     }
 
 
     /* ==========================================
-       備用方法
+       備用複製方法
     ========================================== */
 
     try {
+
 
         const textarea =
             document.createElement(
@@ -629,6 +723,14 @@ async function copyText(
             "fixed";
 
 
+        textarea.style.left =
+            "-9999px";
+
+
+        textarea.style.top =
+            "0";
+
+
         textarea.style.opacity =
             "0";
 
@@ -639,6 +741,7 @@ async function copyText(
 
 
         textarea.focus();
+
 
         textarea.select();
 
@@ -658,7 +761,9 @@ async function copyText(
     } catch (error) {
 
         return false;
+
     }
+
 }
 
 
@@ -669,6 +774,7 @@ async function copyText(
 clearBtn.addEventListener(
     "click",
     () => {
+
 
         urlInput.value =
             "";
@@ -686,6 +792,7 @@ clearBtn.addEventListener(
 
 
         updateLinkCount();
+
     }
 );
 
