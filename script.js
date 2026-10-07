@@ -1,9 +1,10 @@
 /* ==================================================
    蝦賺筆記｜蝦皮推廣連結快速轉換工具
+
    GitHub Pages
-   ↓
+        ↓
    Cloudflare Worker
-   ↓
+        ↓
    Shopee Affiliate API
 ================================================== */
 
@@ -406,6 +407,59 @@ function isShopeeUrl(url) {
 
 
 /* ==================================================
+   判斷是否為手機
+================================================== */
+
+function isMobileDevice() {
+
+    return window.matchMedia(
+        "(max-width: 600px)"
+    ).matches;
+
+}
+
+
+/* ==================================================
+   開啟推廣連結
+================================================== */
+
+function openAffiliateLink(url) {
+
+    /*
+     * 手機版：
+     * 直接使用目前頁面導向
+     *
+     * 這樣可以避免：
+     * - 手機瀏覽器封鎖新分頁
+     * - LINE 內建瀏覽器無法正常開啟 target="_blank"
+     * - 部分手機瀏覽器點擊後沒有反應
+     */
+
+    if (isMobileDevice()) {
+
+        window.location.href =
+            url;
+
+        return;
+
+    }
+
+
+    /*
+     * 電腦版：
+     * 開啟新的瀏覽器分頁
+     */
+
+    window.open(
+        url,
+        "_blank",
+        "noopener,noreferrer"
+    );
+
+}
+
+
+/* ==================================================
    顯示結果
 ================================================== */
 
@@ -473,14 +527,6 @@ function showResults(
                 url;
 
 
-            link.target =
-                "_blank";
-
-
-            link.rel =
-                "noopener noreferrer";
-
-
             link.textContent =
                 url;
 
@@ -491,6 +537,28 @@ function showResults(
 
             link.title =
                 "點擊開啟推廣連結";
+
+
+            /*
+             * 不使用 target="_blank"
+             *
+             * 改用 click event 控制：
+             * 電腦 → 新分頁
+             * 手機 → 目前頁面直接開啟
+             */
+
+            link.addEventListener(
+                "click",
+                function(event) {
+
+                    event.preventDefault();
+
+                    openAffiliateLink(
+                        url
+                    );
+
+                }
+            );
 
 
             /* ==================================
@@ -542,11 +610,6 @@ function showResults(
 
                     } else {
 
-
-                        /*
-                         * 如果瀏覽器禁止自動複製
-                         * 就提示使用者手動複製
-                         */
 
                         alert(
                             "複製失敗，請手動選取網址複製"
@@ -633,6 +696,7 @@ function showResults(
                     },
                     1500
                 );
+
 
             } else {
 
